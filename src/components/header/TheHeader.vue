@@ -6,11 +6,14 @@
         </div>
         <div id="header_right">
           <div id="header_img">
-            <el-dropdown size="small">
+            <el-dropdown>
               <img src="./img/user_logo.jpg" alt="用户头像">
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>登录</el-dropdown-item>
-              </el-dropdown-menu>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>登录</el-dropdown-item>
+                  <el-dropdown-item>退出</el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
             </el-dropdown>
           </div>
         </div>
@@ -40,6 +43,8 @@
             width: @avatar-size;
             height: @avatar-size;
             border-radius: 50%;
+            outline: none;
+            cursor: pointer;
           }
         }
       }
