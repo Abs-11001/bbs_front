@@ -1,0 +1,13 @@
+//当屏幕尺寸小于540px时，搜索栏的热搜屏蔽，同时扩展search搜索框的大小
+@media screen and (max-width: 540px){
+    .search-content{
+        .left{
+            .hot-words{
+                display: none !important;
+            }
+            .search-input{
+                flex: 50% !important;
+            }
+        }
+    }
+}

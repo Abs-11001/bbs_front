@@ -1,0 +1,15 @@
+//当屏幕尺寸小于820px时，搜索栏的热搜屏蔽，同时扩展search搜索框的大小
+@media screen and (max-width: 820px){
+    .search-content{
+        // 如果屏幕小于820px时，news的位置改为search搜索框的下方
+        display: block !important;
+        .left{
+            .hot-words{
+                display: none !important;
+            }
+            .search-input{
+                flex:0 1 70% !important;
+            }
+        }
+    }
+}
