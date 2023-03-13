@@ -25,7 +25,10 @@
         <el-carousel height="30px" direction="vertical" :autoplay="true" interval="2500">
           <el-carousel-item v-for="n in news" :key="n.idx">
 <!--            <h3 text="2xl" justify="center">{{ n.title }}</h3>-->
-            <a :href="n.url" :title="n.title">{{ n.title }}({{ n.time }})</a>
+            <a :href="n.url" :title="n.title">
+              <span class="news-item-content">{{ n.title }}</span>
+              <span class="news-item-time">({{ n.time }})</span>
+            </a>
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -106,16 +109,24 @@
       .news{
         .el-carousel{
           a{
+            display: flex;
+            line-height: 30px;
             font-size: 0.9rem;
             &:hover{
               color:  #95d475;
             }
+            .news-item-content{
+              flex: 1;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
           }
-          ::v-deep .el-carousel__item{
-            display: flex;
-            flex-direction: row-reverse;
-            align-items: center;
-          }
+          //::v-deep .el-carousel__item{
+          //  display: flex;
+          //  flex-direction: row-reverse;
+          //  align-items: center;
+          //}
         }
       }
     }
