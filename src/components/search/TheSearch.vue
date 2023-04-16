@@ -22,7 +22,7 @@
     </div>
     <div class="right">
       <div class="news">
-        <el-carousel height="30px" direction="vertical" :autoplay="true" interval="2500">
+        <el-carousel height="30px" direction="vertical" :autoplay="true" :interval="2500">
           <el-carousel-item v-for="n in news" :key="n.idx">
 <!--            <h3 text="2xl" justify="center">{{ n.title }}</h3>-->
             <a :href="n.url" :title="n.title">
@@ -37,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, ref, reactive } from 'vue'
+  import { ref, reactive } from 'vue'
   import { Search } from '@element-plus/icons-vue'
 
   const search = ref('')
