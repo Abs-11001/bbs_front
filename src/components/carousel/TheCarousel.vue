@@ -1,5 +1,5 @@
 <template>
-  <el-carousel class="width90" id="carousel" :height="carouselHeight">
+  <el-carousel id="carousel" :height="carouselHeight">
     <el-carousel-item v-for="item in imgList" :key="item">
       <el-image :src="item.url" fit="scale-down" ref="myImage"/>
     </el-carousel-item>
@@ -40,6 +40,6 @@ onMounted(() => {
 
 <style lang="less" scoped>
   .el-carousel{
-    margin-top: 10px;
+    margin: 10px 0;
   }
 </style>

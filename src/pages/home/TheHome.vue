@@ -1,5 +1,6 @@
 <template>
   <div class="width90 main">
+    <the-carousel/>
     <el-row :gutter="10">
       <el-col :xs="screenOfXs" :sm="screenOfSm" :md="screenOfMd" :lg="screenOfLg" :xl="screenOfXl">
         <el-skeleton :rows="10" animated :throttle="500" :loading="loading" >
@@ -30,6 +31,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import TheCarousel from "@/components/carousel/TheCarousel.vue";
 import PlateItem from "@/pages/home/plate/PlateItem.vue";
 
 const loading = ref(true)
