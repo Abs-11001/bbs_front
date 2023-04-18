@@ -16,3 +16,21 @@ export function getAnnouncementKey() {
         methos: 'get'
     })
 }
+
+// 通过uuid获取通知公告的具体内容
+export function getAnnouncementData(query) {
+    return request({
+        url: '/bbs/announcement/getAnnouncementData',
+        methos: 'get',
+        params: query
+    })
+}
+
+// 通过uuid获取通知公告的相关信息
+export function getAnnouncementWithUuid(query) {
+    return request({
+        url: '/bbs/announcement/getAnnouncementWithUuid',
+        methos: 'get',
+        params: query
+    })
+}

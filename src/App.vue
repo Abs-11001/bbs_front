@@ -11,7 +11,7 @@
     <the-search/>
     <router-view></router-view>
     <the-footer/>
-    <el-backtop :right="100" :bottom="100" />
+    <el-backtop :right="30" :bottom="50" />
 </template>
 
 <style>
