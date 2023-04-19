@@ -1,5 +1,6 @@
 <template>
   <div v-html="data"></div>
+  <the-comment></the-comment>
   <el-tooltip content="查看源链接" placement="top">
     <div id="source" class="fixed" @click="goToSource">
       <el-icon
@@ -24,6 +25,7 @@ import {useRoute} from "vue-router";
 import {getAnnouncementData, getAnnouncementWithUuid} from "@/api/announcement";
 import {Promotion, Share} from '@element-plus/icons-vue'
 import useClipboard from 'vue-clipboard3'
+import TheComment from "@/components/comment/TheComment.vue";
 
 const route = useRoute()
 const uuid = route.query.uuid
@@ -264,7 +266,7 @@ const toShare = async () => {
   }
   #vsb_content_4 .vsbcontent_img {
     text-align: center;
-    text-indent: 0px;
+    text-indent: 0;
   }
   // 园林学院部分样式
   .news-title {
