@@ -79,6 +79,8 @@ getAnnouncementWithUuid({uuid}).then(res => {
       content = content.replace(/<span>来源.*?<\/span>/gs, '')
       content = content.replace(/<div class="shart_box">.*?<\/div>.<\/div>/gs, '')
       content = content.replace(/<section id="ar_fot">.*?<\/section>/gs, '')
+      // 删除已下载x次
+      content = content.replaceAll(/】已下载.*?次/gs, '】')
     }
     else if(department === '商学院') {
       // 给图片资源添加域名
