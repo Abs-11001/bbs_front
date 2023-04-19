@@ -117,7 +117,8 @@ getAnnouncementWithUuid({uuid}).then(res => {
       content = content.replaceAll('href=\"', 'href=\"http://gcjs.zjyc.edu.cn/')
       // 去除无用信息
       content = content.replace(/来源：.*?时间/gs, '时间')
-      content = content.replace(/浏览.*?<\/span>/gs, '')
+      content = content.replace(/浏览.*?<\/script>/gs, '')
+      content = content.replaceAll(/】已下载.*?次/gs, '】')
     }
     else if(department === '园林学院') {
       // 给图片资源添加域名
@@ -134,7 +135,7 @@ getAnnouncementWithUuid({uuid}).then(res => {
       // 给下载资源等添加域名
       content = content.replaceAll('href=\"', 'href=\"http://swhj.zjyc.edu.cn/')
       // 去除无用信息
-      content = content.replace(/发布者.*?<\/span>/gs, '<span')
+      content = content.replace(/发布者.*?<\/script>/gs, '')
       content = content.replace(/<div class="shany">.*?<\/div>/gs, '')
     }
     data.value = content
@@ -248,18 +249,22 @@ const toShare = async () => {
     line-height: 40px;
   }
   // 工程部分样式
-  .cc_main .title {
+  .layui-col-md12.title {
     padding: 0.3em 5% 0.3em 5%;
     font-size: 2em;
     line-height: 1.5em;
     color: #000000;
     text-align: center;
   }
-  .cc_main .source {
+  .layui-col-md12.source {
     padding: 0.5em 5% 2em 5%;
     line-height: 1.5em;
     color: #888888;
     text-align: center;
+  }
+  #vsb_content_4 .vsbcontent_img {
+    text-align: center;
+    text-indent: 0px;
   }
   // 园林学院部分样式
   .news-title {
@@ -273,5 +278,20 @@ const toShare = async () => {
     text-align: center;
     font-size: 0.95em;
     color: #888;
+  }
+  // 生物环境部分样式
+  .cotit {
+    font-size: 20px;
+    line-height: 40px;
+    text-align: center;
+    padding-bottom: 15px;
+  }
+  .sjkk {
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px dashed #ccc;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
   }
 </style>

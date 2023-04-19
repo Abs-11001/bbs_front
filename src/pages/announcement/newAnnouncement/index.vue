@@ -89,7 +89,7 @@ function change(activeName) {
   // 显示加载状态
   fullscreenLoading.value = true
   // 动态加载数据
-  getAnnouncement({department, plate, page: 1, pageSize: 10}).then(res => {
+  getAnnouncement({department, plate, page: 0, pageSize: 10}).then(res => {
     const {code ,data} = res
     if(code === 200) {
       // 先保存已经存在的数据
