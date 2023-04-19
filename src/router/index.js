@@ -19,6 +19,11 @@ const routes = [
         redirect: 'announcement/newAnnouncement',
         children: [
             {
+                name: 'allAnnouncement',
+                path: 'allAnnouncement',
+                component: () => import('@/pages/announcement/allAnnouncement/index.vue')
+            },
+            {
                 name: 'newAnnouncement',
                 path: 'newAnnouncement',
                 component: () => import('@/pages/announcement/newAnnouncement/index.vue')
@@ -35,5 +40,6 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes,
 })
+
 
 export default router
