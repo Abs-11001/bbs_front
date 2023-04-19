@@ -37,6 +37,7 @@
       </div>
     </div>
   </div>
+<!--  <el-divider class="width90"></el-divider>-->
 </template>
 
 <script setup lang="ts">
@@ -99,7 +100,7 @@
   .search-content{
     display: flex;
     justify-content: space-between;
-    margin-top: 5px;
+    margin: 5px auto;
     // 在media_max_width_820px.less中，实现了媒体查询功能，修改时注意代码适配
     .left{
       flex: 0 1 40%;
@@ -155,5 +156,8 @@
         }
       }
     }
+  }
+  .el-divider{
+    margin: 5px auto;
   }
 </style>
