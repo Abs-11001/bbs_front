@@ -17,7 +17,7 @@
   resolved "https://registry.npmmirror.com/@ctrl/tinycolor/-/tinycolor-3.6.0.tgz#53fa5fe9c34faee89469e48f91d51a3766108bc8"
   integrity sha512-/Z3l6pXthq0JvMYdUFyX9j0MaCltlIn6mfh9jLyQwg5aPKxkyNa0PTHtU1AlFXLNk55ZuAeJRcpvq+tmLfKmaQ==
 
-"@element-plus/icons-vue@^2.0.6", "@element-plus/icons-vue@^2.0.9", "@element-plus/icons-vue@^2.1.0":
+"@element-plus/icons-vue@^2.0.6", "@element-plus/icons-vue@^2.1.0":
   version "2.1.0"
   resolved "https://registry.npmmirror.com/@element-plus/icons-vue/-/icons-vue-2.1.0.tgz#7ad90d08a8c0d5fd3af31c4f73264ca89614397a"
   integrity sha512-PSBn3elNoanENc1vnCfh+3WA9fimRC7n+fWkf3rE5jvv+aBohNHABC/KAR5KWPecxWxDTVT1ERpRbOMRcOV/vA==
@@ -456,7 +456,7 @@ delegate@^3.1.2:
   resolved "https://registry.npmmirror.com/delegate/-/delegate-3.2.0.tgz#b66b71c3158522e8ab5744f720d8ca0c2af59166"
   integrity sha512-IofjkYBZaZivn0V8nnsMJGBr4jVLxHDheKSW88PyxS5QC4Vo9ZbZVvhzlSxY87fVq3STR6r+4cGepyHkcWOQSw==
 
-element-plus@^2.1.8:
+element-plus@^2.2.0:
   version "2.3.3"
   resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.3.3.tgz#33173bbbe84ada40f4d796fe5043c44781198ea4"
   integrity sha512-Zy61OXrG6b4FF3h29A9ZOUkaEQXjCuFwNa7DlpB3Vo+42Tw5zBbHe5a4BY7i56TVJG5xTbS9UQyA726J91pDqg==
@@ -998,13 +998,12 @@ ufo@^1.1.0:
   resolved "https://registry.npmmirror.com/ufo/-/ufo-1.1.1.tgz#e70265e7152f3aba425bd013d150b2cdf4056d7c"
   integrity sha512-MvlCc4GHrmZdAllBc0iUDowff36Q9Ndw/UzqmEKyrfSzokTd9ZCy1i+IIk5hrYKkjoYVQyNbrw7/F8XJ2rEwTg==
 
-undraw-ui@0.9.0:
-  version "0.9.0"
-  resolved "https://registry.npmmirror.com/undraw-ui/-/undraw-ui-0.9.0.tgz#0ae9f3be5ea03a643e3e10b9e05838c71e998216"
-  integrity sha512-woPaTayS4Xb+Vomz+/t/jJlVw/Ep1Ycs0g9KRfQm5zWSRv5MQjzEOT3lvudK4fCl/XHkgsMxasu4cWu2zekjPQ==
+undraw-ui@0.9.2:
+  version "0.9.2"
+  resolved "https://registry.npmmirror.com/undraw-ui/-/undraw-ui-0.9.2.tgz#e8e74e1baee815c3faa345aefac1603f942f179a"
+  integrity sha512-Bewqf5NJAKYV7LyqdvK7DGOGajd83WW5v2sjG4F9bdd62ip0iKDhdocOrlhewmd7vHH5mAqPgdw5NqwgZhGQ/A==
   dependencies:
-    "@element-plus/icons-vue" "^2.0.9"
-    element-plus "^2.1.8"
+    element-plus "^2.2.0"
     store "^2.0.12"
     vue "^3.2.31"
 

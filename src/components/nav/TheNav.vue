@@ -6,8 +6,8 @@
 <!--          <el-menu-item index="/announcement/newAnnouncement">校内通知</el-menu-item>-->
           <el-sub-menu index="/announcement">
             <template #title>校内通知</template>
-            <el-menu-item index="/announcement/newAnnouncement">最新通知</el-menu-item>
-            <el-menu-item index="/announcement/allAnnouncement">全部通知</el-menu-item>
+            <el-menu-item index="/announcement/newAnnouncement">最新公告</el-menu-item>
+            <el-menu-item index="/announcement/allAnnouncement">全部公告</el-menu-item>
           </el-sub-menu>
           <el-menu-item index="/3">信息共享</el-menu-item>
           <el-menu-item index="4">跳蚤市场</el-menu-item>
