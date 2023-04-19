@@ -1,23 +1,26 @@
 <template>
   <div class="search-content quick-news width90">
     <div class="left">
+<!--      <div class="search-input">-->
+<!--        <el-input-->
+<!--            v-model.trim="search"-->
+<!--            class="w-50 m-2"-->
+<!--            clearable-->
+<!--            placeholder="请输入要搜索的内容">-->
+<!--          <template #append>-->
+<!--            <el-button :icon="Search"/>-->
+<!--          </template>-->
+<!--        </el-input>-->
+<!--      </div>-->
+<!--      <div class="hot-words">-->
+<!--        <span>热搜：</span>-->
+<!--        <a href="http://www.waheng.fun" target="_blank" title="暨阳1212121212致用啊">{{ hotWordsFilter('暨阳1212121212致用啊') }}</a>-->
+<!--        <a href="http://www.waheng.fun" target="_blank" title="听">{{ hotWordsFilter('听') }}</a>-->
+<!--        <a href="http://www.waheng.fun" target="_blank" title="暨阳致用">{{ hotWordsFilter('暨阳致用') }}</a>-->
+<!--        <a href="http://www.waheng.fun" target="_blank" title="校园">{{ hotWordsFilter('校园') }}</a>-->
+<!--      </div>-->
       <div class="search-input">
-        <el-input
-            v-model.trim="search"
-            class="w-50 m-2"
-            clearable
-            placeholder="请输入要搜索的内容">
-          <template #append>
-            <el-button :icon="Search"/>
-          </template>
-        </el-input>
-      </div>
-      <div class="hot-words">
-        <span>热搜：</span>
-        <a href="http://www.waheng.fun" target="_blank" title="暨阳1212121212致用啊">{{ hotWordsFilter('暨阳1212121212致用啊') }}</a>
-        <a href="http://www.waheng.fun" target="_blank" title="听">{{ hotWordsFilter('听') }}</a>
-        <a href="http://www.waheng.fun" target="_blank" title="暨阳致用">{{ hotWordsFilter('暨阳致用') }}</a>
-        <a href="http://www.waheng.fun" target="_blank" title="校园">{{ hotWordsFilter('校园') }}</a>
+        <u-search :config="config" @submit="submit"></u-search>
       </div>
     </div>
     <div class="right">
@@ -38,7 +41,8 @@
 
 <script setup lang="ts">
   import { ref, reactive } from 'vue'
-  import { Search } from '@element-plus/icons-vue'
+  import {USearch} from "undraw-ui";
+  import {SearchConfig} from "undraw-ui";
 
   const search = ref('')
   const news = reactive([
@@ -67,6 +71,27 @@
     let suffix = ''
     if(hotWord.length > 4) suffix = '...'
     return hotWord.substring(0, 4) + suffix
+  }
+
+  const config = ref<SearchConfig>({
+    keywords: ['斗罗大陆', '斗破苍穹', '吞噬星空', '凡人修仙传', '一念永恒'], // 搜索框关键字滚动
+    hotSearchList: [
+      '斗罗大陆',
+      '斗破苍穹',
+      '吞噬星空',
+      '凡人修仙传',
+      '一念永恒',
+      '完美世界',
+      '鬼灭之刃',
+      '间谍过家家',
+      '武动乾坤',
+      '神印王座'
+    ] // top10 热门搜索 最多显示10条数据
+  })
+
+  const submit = (val) => {
+    console.log(val)
+    window.open('/all?keyword=' + val)
   }
 </script>
 
