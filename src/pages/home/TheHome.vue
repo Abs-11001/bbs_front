@@ -56,5 +56,6 @@ onMounted(() => {
 <style lang="less" scoped>
   .main{
     margin-top: 10px;
+    min-height: calc(100vh - 325px);
   }
 </style>
