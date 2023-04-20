@@ -1,23 +1,8 @@
 <template>
   <div class="filter">
-<!--    <el-select-->
-<!--        v-model="departmentValue"-->
-<!--        multiple-->
-<!--        clearable-->
-<!--        collapse-tags-->
-<!--        collapse-tags-tooltip-->
-<!--        :max-collapse-tags="5"-->
-<!--        placeholder="请选择机构"-->
-<!--        @visible-change="selectChange">-->
-<!--      <el-option-->
-<!--          v-for="item in departmentOptions"-->
-<!--          :key="item.value"-->
-<!--          :label="item.label"-->
-<!--          :value="item.value"/>-->
-<!--    </el-select>-->
     <el-form :model="form" :inline="true">
       <el-form-item label="标题">
-        <el-input type="text" v-model="form.title" placeholder="请输入标题"></el-input>
+        <el-input type="text" v-model="form.title" placeholder="请输入标题" @keyup.enter="getData"></el-input>
       </el-form-item>
       <el-form-item label="部门">
         <el-select
@@ -37,10 +22,10 @@
             clearable
             placeholder="请选择板块">
           <el-option
-              v-for="item in departmentOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"/>
+              v-for="item in plateOption"
+              :key="item.name"
+              :label="item.name"
+              :value="item.name"/>
         </el-select>
       </el-form-item>
       <el-form-item label="日期">
@@ -48,14 +33,14 @@
           <el-date-picker
               v-model="form.date"
               type="daterange"
+              value-format="YYYY-MM-DD"
               range-separator="-"
               start-placeholder="Start date"
-              end-placeholder="End date"
-          />
+              end-placeholder="End date"/>
         </el-config-provider>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">检索</el-button>
+        <el-button type="primary" @click="getData">检索</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -91,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import {ref, computed} from 'vue'
 import {View, Share} from "@element-plus/icons-vue";
 import { getAnnouncementKey, getAnnouncement } from '@/api/announcement/index.js'
 import {useRouter} from "vue-router";
@@ -103,10 +88,12 @@ import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 // 加载状态控制
 const fullscreenLoading = ref<boolean>(true)
 
-const departmentOptions = ref<string[]>([])
+const departmentOptions = ref<object[]>([])
+const plateOptions = ref<object[]>([])
+// 检索表单
 const form = ref<Object>({
   title: null,
-  department:  null,
+  department: null,
   plate: null,
   date: null
 })
@@ -114,14 +101,31 @@ const form = ref<Object>({
 // 加载部门筛选项
 getAnnouncementKey().then(res => {
   const { data } = res
-  departmentOptions.value = data.map(item => {
-    return {
+   data.forEach(item => {
+    departmentOptions.value.push({
       value: item.department,
       label: item.department
-    }
+    })
+    plateOptions.value.push({
+      [item.department]: item.plate
+    })
   })
 }, err => {
   console.log(err)
+})
+// 动态计算部门下面的板块数据项
+const plateOption = computed(() => {
+  const {department} = form.value
+  // 如果选择了部门才回去找相应的数据项
+  if(department) {
+    // 过滤出来部门对应的板块数据
+    let res = plateOptions.value.filter(item => {
+      if(item.hasOwnProperty(department)) return item
+    })
+    return res[0][department]
+  }
+  // 没有就返回空
+  return []
 })
 
 const announcementData = ref<string[]>([])
@@ -133,8 +137,23 @@ getData()
 function getData() {
   fullscreenLoading.value = true
 
+  let beginDate = null
+  let endDate = null
+  // 日期选择了才赋值，不然没有下标
+  if(form.value.date) {
+    beginDate = form.value.date[0]
+    endDate = form.value.date[1]
+  }
+
+  // 构建查询参数
   const query = {
-    page: currentPage.value,
+    title: form.value.title,
+    department: form.value.department,
+    plate: form.value.plate,
+    beginDate,
+    endDate,
+    // 实际查询是从0页开始查，因此要把当前页码 - 1
+    page: currentPage.value - 1,
     pageSize: pageSize.value,
   }
   getAnnouncement(query).then(res => {
@@ -177,5 +196,8 @@ const toShare = async (scope) => {
   }
   .el-icon{
     margin: 0 5px;
+  }
+  .el-pagination{
+    justify-content: end;
   }
 </style>
