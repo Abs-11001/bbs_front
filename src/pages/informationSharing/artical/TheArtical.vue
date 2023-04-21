@@ -76,8 +76,11 @@ defineProps({
         display: flex;
         flex-direction: column;
         justify-content: space-around;
-
+        .section-title{
+          margin: 10px 0;
+        }
         .section-description{
+          margin: 10px 0;
           font-weight: 400;
           font-size: 13px;
           line-height: 22px;
@@ -89,6 +92,7 @@ defineProps({
           -webkit-line-clamp: 2;
         }
         .section-action{
+          margin: 10px 0;
           display: flex;
           align-items: center;
           div{
@@ -102,8 +106,9 @@ defineProps({
         align-items: center;
         justify-content: center;
         .el-image{
-          width: 240px;
-          height: 150px;
+          margin-left: 24px;
+          width: 120px;
+          height: 80px;
         }
       }
     }
