@@ -9,7 +9,7 @@
             <el-menu-item index="/announcement/newAnnouncement">最新公告</el-menu-item>
             <el-menu-item index="/announcement/allAnnouncement">全部公告</el-menu-item>
           </el-sub-menu>
-          <el-menu-item index="/3">信息共享</el-menu-item>
+          <el-menu-item index="/informationSharing">信息共享</el-menu-item>
           <el-menu-item index="4">跳蚤市场</el-menu-item>
           <el-menu-item index="6">互帮互助</el-menu-item>
           <el-menu-item index="5">暨阳树洞</el-menu-item>
@@ -34,6 +34,7 @@ onMounted(() => {
     if(path === '/') activeMenu.value = '/home'
     if(path.indexOf('home') !== -1) activeMenu.value = '/home'
     if(path.indexOf('announcement') !== -1) activeMenu.value = '/announcement/newAnnouncement'
+    if(path.indexOf('informationSharing') !== -1) activeMenu.value = '/informationSharing'
   }, 0)
 })
 </script>

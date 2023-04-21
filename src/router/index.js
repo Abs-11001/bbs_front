@@ -34,7 +34,12 @@ const routes = [
                 component: () => import('@/pages/announcement/detailAnnouncement/index.vue')
             }
         ]
-    }
+    },
+    {
+        path: '/informationSharing',
+        name: 'informationSharing',
+        component: () => import('@/pages/informationSharing/index.vue')
+    },
 ]
 const router = createRouter({
     history: createWebHashHistory(),
