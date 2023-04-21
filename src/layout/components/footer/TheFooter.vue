@@ -53,7 +53,7 @@
 
 <script setup>
 
-  const bbs_logo = new URL('../../assets/images/bbs_logo.png', import.meta.url).href
+  const bbs_logo = new URL('../../../assets/images/bbs_logo.png', import.meta.url).href
 
 </script>
 

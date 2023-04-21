@@ -31,7 +31,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import TheCarousel from "@/components/carousel/TheCarousel.vue";
+import TheCarousel from "@/layout/components/carousel/TheCarousel.vue";
 import PlateItem from "@/pages/home/plate/PlateItem.vue";
 
 const loading = ref(true)

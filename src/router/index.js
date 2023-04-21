@@ -1,45 +1,47 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import  TheHome from '@/pages/home/TheHome.vue'
-import Announcement from "@/pages/announcement/index.vue";
+import Layout from '@/layout/index.vue'
 
 const routes = [
 
     {
-      path: '/',
-      redirect: '/home',
-    },
-    {
-        path: '/home',
-        name: 'home',
-        component: TheHome
-    },
-    {
-        path: '/announcement',
-        name: 'announcement',
-        component: Announcement,
-        redirect: 'announcement/newAnnouncement',
+        path: '/',
+        redirect: 'home',
+        component: Layout,
         children: [
             {
-                name: 'allAnnouncement',
-                path: 'allAnnouncement',
-                component: () => import('@/pages/announcement/allAnnouncement/index.vue')
+                path: 'home',
+                name: 'home',
+                component: () => import('@/pages/home/TheHome.vue')
             },
             {
-                name: 'newAnnouncement',
-                path: 'newAnnouncement',
-                component: () => import('@/pages/announcement/newAnnouncement/index.vue')
+                path: 'announcement',
+                name: 'announcement',
+                component: () => import('@/pages/announcement/index.vue'),
+                redirect: {name: 'newAnnouncement'},
+                children: [
+                    {
+                        name: 'allAnnouncement',
+                        path: 'allAnnouncement',
+                        component: () => import('@/pages/announcement/allAnnouncement/index.vue')
+                    },
+                    {
+                        name: 'newAnnouncement',
+                        path: 'newAnnouncement',
+                        component: () => import('@/pages/announcement/newAnnouncement/index.vue')
+                    },
+                    {
+                        name: 'detailAnnouncement',
+                        path: 'detailAnnouncement',
+                        component: () => import('@/pages/announcement/detailAnnouncement/index.vue')
+                    }
+                ]
             },
             {
-                name: 'detailAnnouncement',
-                path: 'detailAnnouncement',
-                component: () => import('@/pages/announcement/detailAnnouncement/index.vue')
-            }
+                path: 'informationSharing',
+                name: 'informationSharing',
+                component: () => import('@/pages/informationSharing/index.vue')
+            },
         ]
-    },
-    {
-        path: '/informationSharing',
-        name: 'informationSharing',
-        component: () => import('@/pages/informationSharing/index.vue')
     },
     {
         path: '/editor',
