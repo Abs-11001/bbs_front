@@ -40,3 +40,33 @@ npm run build
 
 <block>tip: element-plus低于2.1.8，el-input样式会受影响；vue低于3.2.25不能正常使用</block>
 > https://undraw.gitee.io/undraw-ui/
+
+
+3. wangEditor
+
+一款富文本插件，用于编写文章,开源 Web 富文本编辑器，开箱即用，配置简单
+> https://www.wangeditor.com/
+
+
+4. IconPark
+
+图标库，拥有丰富且可编辑的图标资源
+
+> https://iconpark.oceanengine.com/home
+
+
+5. wangEditor markdown
+
+在 wangEditor 中使用基本的 markdown 语法。
+- 标题
+    - `#`
+    - `##`
+    - `###`
+    - `####`
+    - `#####`
+- 列表 `-` `+` `*`
+- 引用 `>`
+- 分割线 `---`
+- 代码块 ```js
+
+> https://github.com/wangeditor-team/wangEditor-plugin-md
