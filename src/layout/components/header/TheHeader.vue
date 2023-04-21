@@ -29,9 +29,8 @@ import { useRouter } from "vue-router";
 const router = useRouter()
 
 function toEditor() {
-  router.push({
-    name: 'editor'
-  })
+  let routeData = router.resolve({ name: 'editor'})
+  window.open(routeData.href, '_blank');
 }
 </script>
 

@@ -9,10 +9,10 @@
   <div class="container">
     <div class="header">
       <input type="text" placeholder="请输入标题...">
-      <el-button type="primary">发布</el-button>
+      <el-button @click="submit" type="primary">发布</el-button>
     </div>
     <div class="content">
-      <div class="edit half">
+      <div class="edit">
         <Toolbar
             style="border-bottom: 1px solid #ccc"
             :editor="editorRef"
@@ -20,31 +20,82 @@
             mode="default"
         />
         <Editor
-            style="height: 500px; overflow-y: hidden;"
+            style="height: calc(100vh - 130px);"
             v-model="valueHtml"
             :defaultConfig="editorConfig"
             :mode="mode"
             @onCreated="handleCreated"
+            @onChange="textChange"
         />
       </div>
-<!--      <div class="preview half">-->
-<!--        <div class="preview-edit" v-html="valueHtml"></div>-->
-<!--      </div>-->
     </div>
+<!--    <el-footer>-->
+<!--     字数：{{ contentSize }}-->
+<!--    </el-footer>-->
   </div>
+  <el-drawer v-model="showDrawer">
+    <template #header>
+      <h4>发布文章</h4>
+    </template>
+    <template #default>
+      <div>
+        <el-form :model="form" :rules="formRules" ref="formRef">
+          <el-form-item label="分类:" prop="category">
+            <el-radio-group v-model="form.category">
+              <el-radio-button label="信息共享">信息共享</el-radio-button>
+              <el-radio-button label="跳蚤市场">跳蚤市场</el-radio-button>
+              <el-radio-button label="暨阳树洞">暨阳树洞</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="文章封面">
+            <el-upload
+                class="upload-demo"
+                drag
+                :limit="1">
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="文章封面"/>
+              <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+              <template #tip>
+                <div class="el-upload__tip">
+                  jpg/png files with a size less than 500kb
+                </div>
+              </template>
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="文章摘要" prop="description">
+            <el-input
+                v-model="form.description"
+                :rows="10"
+                type="textarea"
+                placeholder="请输入文章摘要"
+            />
+          </el-form-item>
+          <el-divider></el-divider>
+          <el-form-item label="字数统计：">
+            {{ contentSize }}
+          </el-form-item>
+          <el-form-item label="当前时间：">
+            2023-04-22 01:02
+          </el-form-item>
+        </el-form>
+      </div>
+    </template>
+    <template #footer>
+      <div style="flex: auto">
+        <el-button @click="cancel">取消</el-button>
+        <el-button type="primary" @click="confirm(formRef)">确定并发布</el-button>
+      </div>
+    </template>
+  </el-drawer>
 </template>
 
 <script setup>
-import { onBeforeUnmount, ref, shallowRef } from 'vue'
-
-// md 扩展选项
-// import { Boot } from '@wangeditor/editor'
-// import markdownModule from '@wangeditor/plugin-md'
-// md扩展选项
-// Boot.registerModule(markdownModule)
+import {onBeforeUnmount, reactive, ref, shallowRef} from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import '@wangeditor/editor/dist/css/style.css' // 引入 css
+import '@wangeditor/editor/dist/css/style.css'
+import {Plus} from "@element-plus/icons-vue"; // 引入 css
 
+// 设置文本编辑器的状态，default表示所有功能,simple表示简单版本
+const mode = ref('default')
 
 // 编辑器实例，必须用 shallowRef
 const editorRef = shallowRef()
@@ -52,7 +103,7 @@ const editorRef = shallowRef()
 // 内容 HTML
 const valueHtml = ref('')
 
-
+// 去除不用的功能
 const toolbarConfig = {
   excludeKeys: [
       'fullScreen',
@@ -60,7 +111,7 @@ const toolbarConfig = {
   ]
 }
 
-
+// 设置 图片为base64存储
 const editorConfig = {
   placeholder: '请输入内容...',
   MENU_CONF: {
@@ -84,19 +135,71 @@ onBeforeUnmount(() => {
 // 组件创建时的回调
 const handleCreated = (editor) => {
   editorRef.value = editor // 记录 editor 实例，重要！
+
 }
 
+// 抽屉控制标识
+const showDrawer = ref(false)
+const form = reactive({
+  category: null,
+  previewImg: null,
+  wordCount: null,
+  description: null
+})
+
+// 监控内容字数
+const contentSize = ref(0)
+function textChange() {
+  const text = editorRef.value.getText()
+  contentSize.value = text.length
+  form.description = text.substring(0, 100).trim()
+}
+
+const formRef = ref(null)
+const formRules = reactive({
+  category: [
+    { required: true, message: '请选择文章类别', trigger: 'change' },
+  ],
+  description: [
+    {
+      required: true,
+      message: '请输入文章摘要',
+      trigger: 'change',
+    },
+  ],
+})
+// 控制抽屉显示
+function submit() {
+  showDrawer.value = true
+}
+// 关闭抽屉
+function cancel() {
+  showDrawer.value = false
+}
+// 提交数据
+const confirm = async (formEl) => {
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      console.log('submit!')
+    } else {
+      console.log('error submit!', fields)
+    }
+  })
+}
 
 </script>
 
 <style lang="less" scoped>
+.container{
+  min-width: 1280px;
+}
 .header{
   display: flex;
   align-items: center;
   margin: 5px 0;
   input{
     flex: 1;
-    padding: 0 2rem;
+    padding: 10px 2rem;
     border: none;
     outline: none;
     font-size: 2rem;
@@ -106,14 +209,25 @@ const handleCreated = (editor) => {
   }
   .el-button{
     width: 100px;
+    margin-right: 20px;
   }
 }
 .content{
   display: flex;
-  .half{
-    flex: 1 1 50%;
+  .edit{
+    flex: 1;
     border-top: 1px solid red;
-    height: 99vh;
+  }
+}
+.el-footer{
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  background-color: #f8f9fa;
+}
+.el-drawer{
+  .el-button{
+    width: 100px;
   }
 }
 </style>
