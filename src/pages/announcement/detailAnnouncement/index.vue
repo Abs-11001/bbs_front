@@ -1,5 +1,5 @@
 <template>
-  <div v-html="data"></div>
+  <div v-html="data" v-loading.fullscreen.lock="fullscreenLoading"></div>
   <the-comment></the-comment>
   <el-tooltip content="查看源链接" placement="top">
     <div id="source" class="fixed" @click="goToSource">
@@ -27,6 +27,9 @@ import {Promotion, Share} from '@element-plus/icons-vue'
 import useClipboard from 'vue-clipboard3'
 import TheComment from "@/components/comment/TheComment.vue";
 
+// 加载状态控制
+const fullscreenLoading = ref(true)
+
 const route = useRoute()
 const uuid = route.query.uuid
 const data = ref(null)
@@ -47,6 +50,7 @@ getAnnouncementWithUuid({uuid}).then(res => {
 
   // 通过uuid来加载具体的公告信息
   getAnnouncementData({uuid}).then(res => {
+    fullscreenLoading.value = false
     let content = res.data.data
     // 其实每个图片资源的src是可以共用一个，
     // 比如官网的开头是www.zjyc.edu.cn,商学院的开头是sxy.zjyc.edu.cn，
@@ -145,9 +149,11 @@ getAnnouncementWithUuid({uuid}).then(res => {
     data.value = content
   }, err => {
     console.log(err)
+    fullscreenLoading.value = false
   })
 }, err => {
   console.log(err)
+  fullscreenLoading.value = false
 })
 
 // 跳转到源页面
