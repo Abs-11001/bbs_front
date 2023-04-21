@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="section-right">
-        <el-image :src="data.previous"></el-image>
+        <el-image :src="data.preview"></el-image>
       </div>
     </div>
     <el-divider/>

@@ -6,20 +6,31 @@
 */
 
 <template>
-  <div class="container width90">
-    <Toolbar
-        style="border-bottom: 1px solid #ccc"
-        :editor="editorRef"
-        :defaultConfig="toolbarConfig"
-        :mode="mode"
-    />
-    <Editor
-        style="height: 500px; overflow-y: hidden;"
-        v-model="valueHtml"
-        :defaultConfig="editorConfig"
-        :mode="mode"
-        @onCreated="handleCreated"
-    />
+  <div class="container">
+    <div class="header">
+      <input type="text" placeholder="请输入标题...">
+      <el-button type="primary">发布</el-button>
+    </div>
+    <div class="content">
+      <div class="edit half">
+        <Toolbar
+            style="border-bottom: 1px solid #ccc"
+            :editor="editorRef"
+            :defaultConfig="toolbarConfig"
+            mode="default"
+        />
+        <Editor
+            style="height: 500px; overflow-y: hidden;"
+            v-model="valueHtml"
+            :defaultConfig="editorConfig"
+            :mode="mode"
+            @onCreated="handleCreated"
+        />
+      </div>
+<!--      <div class="preview half">-->
+<!--        <div class="preview-edit" v-html="valueHtml"></div>-->
+<!--      </div>-->
+    </div>
   </div>
 </template>
 
@@ -29,13 +40,11 @@ import { onBeforeUnmount, ref, shallowRef } from 'vue'
 // md 扩展选项
 // import { Boot } from '@wangeditor/editor'
 // import markdownModule from '@wangeditor/plugin-md'
+// md扩展选项
+// Boot.registerModule(markdownModule)
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 
-// md扩展选项
-// Boot.registerModule(markdownModule)
-
-const mode = ref('default')
 
 // 编辑器实例，必须用 shallowRef
 const editorRef = shallowRef()
@@ -80,6 +89,31 @@ const handleCreated = (editor) => {
 
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+.header{
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+  input{
+    flex: 1;
+    padding: 0 2rem;
+    border: none;
+    outline: none;
+    font-size: 2rem;
+    &:focus-visible{
+      border: none;
+    }
+  }
+  .el-button{
+    width: 100px;
+  }
+}
+.content{
+  display: flex;
+  .half{
+    flex: 1 1 50%;
+    border-top: 1px solid red;
+    height: 99vh;
+  }
+}
 </style>
