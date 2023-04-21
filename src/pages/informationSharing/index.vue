@@ -37,7 +37,7 @@ const latestData = reactive([
     view: 2826,
     like: 95,
     comment: 90,
-    previous: 'https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9f5dfde2369345058262f726acab39bd~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?'
+    preview: 'https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9f5dfde2369345058262f726acab39bd~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?'
   }
 ])
 
@@ -51,7 +51,7 @@ function loadLatest() {
     view: 2826,
     like: 95,
     comment: 90,
-    previous: 'https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9f5dfde2369345058262f726acab39bd~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?'
+    preview: 'https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9f5dfde2369345058262f726acab39bd~tplv-k3u1fbpfcp-no-mark:240:240:240:160.awebp?'
   })
 }
 </script>
