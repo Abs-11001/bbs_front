@@ -3,6 +3,7 @@ import  TheHome from '@/pages/home/TheHome.vue'
 import Announcement from "@/pages/announcement/index.vue";
 
 const routes = [
+
     {
       path: '/',
       redirect: '/home',
@@ -39,6 +40,12 @@ const routes = [
         path: '/informationSharing',
         name: 'informationSharing',
         component: () => import('@/pages/informationSharing/index.vue')
+    },
+    {
+        path: '/editor',
+        name: 'editor',
+        component: () => import('@/pages/EditArtical/EditArtical.vue'),
+        meta: {fullScreen: true}
     },
 ]
 const router = createRouter({
