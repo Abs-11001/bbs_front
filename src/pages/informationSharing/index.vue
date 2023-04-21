@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" class="demo-tabs">
       <el-tab-pane label="最新" name="latest" v-infinite-scroll="loadLatest">
         <el-skeleton :rows="5" animated :throttle="500" :loading="loading" >
-          <the-artical v-for="item in latestData" :key="item.id" :data="item"></the-artical>
+          <artical-section-component v-for="item in latestData" :key="item.id" :data="item"></artical-section-component>
         </el-skeleton>
       </el-tab-pane>
       <el-tab-pane label="最热" name="hottest">
@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import {reactive, ref, onMounted} from "vue";
-import TheArtical from "@/pages/informationSharing/artical/TheArtical.vue";
+import ArticalSectionComponent from "@/pages/informationSharing/artical/ArticalSectionComponent.vue";
 
 // 加载状态控制
 const loading = ref<boolean>(true)

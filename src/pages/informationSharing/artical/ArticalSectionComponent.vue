@@ -1,3 +1,10 @@
+/**
+ * @author 三分
+ * @description: 信息共享页面，文章展示组件
+ * @create date 2023/04/21 13:05:22 
+ * @last date 2023/04/21 13:05:22
+*/
+
 <template>
   <section>
     <div class="section-info">
