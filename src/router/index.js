@@ -49,6 +49,11 @@ const routes = [
         component: () => import('@/pages/EditArtical/EditArtical.vue'),
         meta: {fullScreen: true}
     },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/pages/login/index.vue')
+    }
 ]
 const router = createRouter({
     history: createWebHashHistory(),

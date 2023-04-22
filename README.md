@@ -70,3 +70,9 @@ npm run build
 - 代码块 ```js
 
 > https://github.com/wangeditor-team/wangEditor-plugin-md
+
+6. js-md5
+
+js端md5加密工具
+
+> https://github.com/emn178/js-md5
