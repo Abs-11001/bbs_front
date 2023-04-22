@@ -51,6 +51,7 @@
             <el-upload
                 class="upload-demo"
                 drag
+                :before-upload="beforeAvatarUpload"
                 :limit="1">
               <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="文章封面"/>
               <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -156,6 +157,7 @@ function textChange() {
 }
 
 const formRef = ref(null)
+// 表单数据规则
 const formRules = reactive({
   category: [
     { required: true, message: '请选择文章类别', trigger: 'change' },
@@ -186,7 +188,18 @@ const confirm = async (formEl) => {
     }
   })
 }
-
+// 文章封面上传前
+const beforeAvatarUpload = (rawFile) => {
+  console.log(rawFile.type)
+  if (rawFile.type.toString().indexOf('image') === -1) {
+    ElMessage.error('文章封面为图片,请上传图片')
+    return false
+  } else if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('文章封面最大支持 2MB!')
+    return false
+  }
+  return true
+}
 </script>
 
 <style lang="less" scoped>
