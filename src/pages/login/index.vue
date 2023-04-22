@@ -76,8 +76,14 @@ import {User, Lock} from "@element-plus/icons-vue";
 import {userLogin} from "@/api/login/user";
 import md5 from 'js-md5';
 import {useRouter} from "vue-router";
+import {useLoginStore} from "@/store/login";
+import {useUserStore} from "@/store/user";
 
 const router = useRouter()
+// 实例化loginStore
+const loginStore = useLoginStore()
+// 实例化userStore
+const userStore = useUserStore()
 
 const loginActive = ref(true)
 const registerActive = ref(false)
@@ -127,6 +133,15 @@ const login = async (formEl) => {
       userLogin(data).then(res => {
         const { code, data } = res
         if(code === 200) {
+          const {uuid, user_name, nick_name, avatar, token, expire_time } = data
+          // 保存token信息
+          loginStore.token = token
+          loginStore.expireTime = expire_time
+          // 保存user信息
+          userStore.uuid = uuid
+          userStore.userName = user_name
+          userStore.nickName = nick_name
+          userStore.avatar = avatar
           router.push({
             name: 'home'
           })
