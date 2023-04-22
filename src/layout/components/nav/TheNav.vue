@@ -3,7 +3,7 @@
     <div class="nav-content width90">
       <el-menu mode="horizontal" :default-active="activeMenu" class="nav-box" router>
           <el-menu-item index="/home" >首页</el-menu-item>
-<!--          <el-menu-item index="/announcement/newAnnouncement">校内通知</el-menu-item>-->
+          <!--          <el-menu-item index="/announcement/newAnnouncement">校内通知</el-menu-item>-->
           <el-sub-menu index="/announcement">
             <template #title>校内通知</template>
             <el-menu-item index="/announcement/newAnnouncement">最新公告</el-menu-item>
@@ -14,15 +14,18 @@
           <el-menu-item index="6">互帮互助</el-menu-item>
           <el-menu-item index="5">暨阳树洞</el-menu-item>
       </el-menu>
+      <el-button :icon="EditPen" color="#e8f5e9" @click="toEditor">写文章</el-button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
+import {EditPen} from "@element-plus/icons-vue";
 
 const route = useRoute()
+const router = useRouter()
 const activeMenu = ref('/')
 
 onMounted(() => {
@@ -37,14 +40,25 @@ onMounted(() => {
     if(path.indexOf('informationSharing') !== -1) activeMenu.value = '/informationSharing'
   }, 0)
 })
+
+function toEditor() {
+  let routeData = router.resolve({ name: 'editor'})
+  window.open(routeData.href, '_blank');
+}
 </script>
 
 <style lang="less" scoped>
   .nav-content{
+    position: relative;
     .nav-box {
       .el-menu-item {
         width: 100px;
       }
+    }
+    .el-button{
+      position: absolute;
+      top: 10px;
+      right: 0;
     }
   }
 </style>

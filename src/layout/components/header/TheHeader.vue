@@ -5,13 +5,12 @@
           <img src="./img/logo.png" alt="浙江农林大学暨阳学院logo">
         </div>
         <div id="header_right">
-          <el-button :icon="EditPen" color="#e8f5e9" @click="toEditor">写文章</el-button>
           <div id="header_img">
             <el-dropdown>
-              <img src="./img/user_logo.jpg" alt="用户头像">
+              <img src="./img/default.jpeg" alt="用户头像">
               <template #dropdown>
                 <el-dropdown-menu>
-                  <el-dropdown-item>登录</el-dropdown-item>
+                  <el-dropdown-item @click="handleLogin">登录</el-dropdown-item>
                   <el-dropdown-item>退出</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -23,14 +22,14 @@
 </template>
 
 <script setup>
-import {EditPen} from "@element-plus/icons-vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter()
 
-function toEditor() {
-  let routeData = router.resolve({ name: 'editor'})
-  window.open(routeData.href, '_blank');
+function handleLogin() {
+  router.push({
+    name: 'login'
+  })
 }
 </script>
 

@@ -184,7 +184,7 @@ const confirm = async (formEl) => {
     if (valid) {
       console.log('submit!')
     } else {
-      console.log('error submit!', fields)
+      return false
     }
   })
 }
