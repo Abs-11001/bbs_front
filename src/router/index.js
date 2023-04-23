@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/layout/index.vue'
-import { checkToken } from "@/api/login/user";
+import { checkToken } from "@/api/user";
 
 const routes = [
 
