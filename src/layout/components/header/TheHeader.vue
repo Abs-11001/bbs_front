@@ -56,8 +56,11 @@ function handleLogout() {
   userLogout({uuid}).then(res => {
     const {code, msg} = res
     if(code === 200) {
-      // 退出成功清除数据
-      localStorage.clear()
+      // 退出成功清除无用数据
+      token.value = null
+      localStorage.removeItem('token')
+      localStorage.removeItem('expireTime')
+      localStorage.removeItem('uuid')
       loginStore.$reset()
       userStore.$reset()
       ElMessage({

@@ -169,6 +169,10 @@ const login = async (formEl) => {
             localStorage.setItem('user', '')
             localStorage.setItem('password', '')
           }
+          ElMessage({
+            message: '登录成功',
+            type: 'success',
+          })
           router.push({
             name: 'home'
           })
@@ -224,7 +228,7 @@ const register = async (formEl) => {
           switchTab('login')
           // 保存相关数据
           loginForm.loginUserName = data.userName
-          loginForm.loginPassword = data.passwordMd5
+          loginForm.loginPassword = registerForm.registerPassword
         }else {
           ElMessage.error(msg)
         }
