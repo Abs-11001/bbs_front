@@ -42,8 +42,9 @@ onMounted(() => {
 })
 
 function toEditor() {
-  let routeData = router.resolve({ name: 'editor'})
-  window.open(routeData.href, '_blank');
+  router.push({
+    name: 'editor'
+  })
 }
 </script>
 
