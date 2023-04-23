@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import {User, Lock} from "@element-plus/icons-vue";
 import {userLogin} from "@/api/login/user";
 import md5 from 'js-md5';
@@ -134,6 +134,9 @@ const login = async (formEl) => {
         const { code, data } = res
         if(code === 200) {
           const {uuid, user_name, nick_name, avatar, token, expire_time } = data
+          // 保存token
+          localStorage.setItem('token', token)
+          localStorage.setItem('expireTime', expire_time)
           // 保存token信息
           loginStore.token = token
           loginStore.expireTime = expire_time
@@ -142,6 +145,14 @@ const login = async (formEl) => {
           userStore.userName = user_name
           userStore.nickName = nick_name
           userStore.avatar = avatar
+          // 判断用户是否勾选了记住我
+          if(loginForm.loginRemember) {
+            localStorage.setItem('user', loginForm.loginUserName)
+            localStorage.setItem('password', loginForm.loginPassword)
+          }else {
+            localStorage.setItem('user', '')
+            localStorage.setItem('password', '')
+          }
           router.push({
             name: 'home'
           })
@@ -163,6 +174,14 @@ const registerForm = reactive({
   registerPassword: null,
   registerAgainPassword: null
 })
+
+onMounted(() => {
+  // 读取用户信息，记住我选项保存后的内容
+  const user = localStorage.getItem('user')
+  const password = localStorage.getItem('password')
+  loginForm.loginUserName = user
+  loginForm.loginPassword = password
+})
 </script>
 
 <style lang="less" scoped>
@@ -180,7 +199,7 @@ const registerForm = reactive({
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.8);
     &:hover{
-      box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.5) ;
+      box-shadow: 0 0 20px 0 rgba(0,0,0,0.5) ;
     }
     .tab{
       position: relative;
