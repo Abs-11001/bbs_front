@@ -14,6 +14,7 @@
                 v-model="loginForm.loginUserName"
                 clearable
                 :prefix-icon="User"
+                autocomplete="on"
                 placeholder="请输入用户名">
             </el-input>
           </el-form-item>
@@ -23,6 +24,7 @@
                 v-model="loginForm.loginPassword"
                 clearable
                 show-password
+                autocomplete="on"
                 :prefix-icon="Lock"
                 placeholder="请输入密码">
             </el-input>
@@ -36,12 +38,16 @@
         </el-form>
       </div>
       <div class="register" v-show="registerActive">
-        <el-form>
+        <el-form
+          :model="registerForm"
+          ref="registerRef"
+          :rules="registerRules">
           <el-form-item prop="registerUserName">
             <el-input
                 v-model="registerForm.registerUserName"
                 clearable
                 :prefix-icon="User"
+                autocomplete="on"
                 placeholder="请输入用户名">
             </el-input>
           </el-form-item>
@@ -49,6 +55,7 @@
             <el-input
                 v-model="registerForm.registerPassword"
                 clearable
+                type="password"
                 :prefix-icon="Lock"
                 placeholder="请输入密码">
             </el-input>
@@ -57,12 +64,13 @@
             <el-input
                 v-model="registerForm.registerAgainPassword"
                 clearable
+                type="password"
                 :prefix-icon="Lock"
                 placeholder="请输入确认密码">
             </el-input>
           </el-form-item>
           <div class="btn">
-            <el-button>注册</el-button>
+            <el-button @click="register(registerRef)">注册</el-button>
           </div>
         </el-form>
       </div>
@@ -72,12 +80,21 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import {User, Lock} from "@element-plus/icons-vue";
-import {userLogin} from "@/api/login/user";
-import md5 from 'js-md5';
 import {useRouter} from "vue-router";
+import md5 from 'js-md5';
 import {useLoginStore} from "@/store/login";
 import {useUserStore} from "@/store/user";
+import {User, Lock} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus";
+import {userLogin, userRegister} from "@/api/user";
+
+onMounted(() => {
+  // 读取用户信息，记住我选项保存后的内容
+  const user = localStorage.getItem('user')
+  const password = localStorage.getItem('password')
+  loginForm.loginUserName = user
+  loginForm.loginPassword = password
+})
 
 const router = useRouter()
 // 实例化loginStore
@@ -87,10 +104,8 @@ const userStore = useUserStore()
 
 const loginActive = ref(true)
 const registerActive = ref(false)
-
 // 选项卡底边实例对象
 const tabBorder = ref(null)
-
 function switchTab(type) {
   if(type === 'login') {
     loginActive.value = true
@@ -103,6 +118,7 @@ function switchTab(type) {
   }
 }
 
+// 登录相关
 const loginRef = ref(null)
 // 登录用户名，密码，是否记住
 const loginForm = reactive({
@@ -110,7 +126,6 @@ const loginForm = reactive({
   loginPassword: null,
   loginRemember: true,
 })
-
 const loginFormRules = reactive({
   loginUserName: [
     { required: true, message: '请输入账号', trigger: 'blur' },
@@ -120,7 +135,6 @@ const loginFormRules = reactive({
       required: true, message: '请输入密码', trigger: 'blur',
     }
   ]})
-
 const login = async (formEl) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
@@ -137,6 +151,8 @@ const login = async (formEl) => {
           // 保存token
           localStorage.setItem('token', token)
           localStorage.setItem('expireTime', expire_time)
+          // 保存uuid
+          localStorage.setItem('uuid', uuid)
           // 保存token信息
           loginStore.token = token
           loginStore.expireTime = expire_time
@@ -166,7 +182,7 @@ const login = async (formEl) => {
   })
 }
 
-
+// 注册相关
 const registerRef = ref(null)
 // 注册用户名，密码，确认密码
 const registerForm = reactive({
@@ -174,14 +190,53 @@ const registerForm = reactive({
   registerPassword: null,
   registerAgainPassword: null
 })
-
-onMounted(() => {
-  // 读取用户信息，记住我选项保存后的内容
-  const user = localStorage.getItem('user')
-  const password = localStorage.getItem('password')
-  loginForm.loginUserName = user
-  loginForm.loginPassword = password
+const validatePass2 = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请输入确认密码'))
+  } else if (value !== registerForm.registerPassword) {
+    callback(new Error("两次密码不一致!"))
+  } else {
+    callback()
+  }
+}
+const registerRules = reactive({
+  registerUserName: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+  registerPassword: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+  registerAgainPassword: [{ validator: validatePass2, trigger: 'blur' }],
 })
+const register = async (formEl) => {
+  if (!formEl) return
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      const data = {
+        userName: registerForm.registerUserName,
+        // 32位小写加密
+        passwordMd5: md5(registerForm.registerPassword)
+      }
+      userRegister(data).then(res => {
+        const {code, msg} = res
+        if(code === 200) {
+          ElMessage({
+            message: msg,
+            type: 'success',
+          })
+          // 切换选项卡到登录
+          switchTab('login')
+          // 保存相关数据
+          loginForm.loginUserName = data.userName
+          loginForm.loginPassword = data.passwordMd5
+        }else {
+          ElMessage.error(msg)
+        }
+      }, err => {
+        console.log(err)
+      })
+    } else {
+      return false
+    }
+  })
+}
+
 </script>
 
 <style lang="less" scoped>
