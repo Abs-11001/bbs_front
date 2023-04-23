@@ -10,8 +10,16 @@ import 'undraw-ui/dist/style.css'
 import '@/assets/css/base.css'
 import '@/assets/css/media_max_width_820px.less'
 
-const pinia = createPinia()
 const app = createApp(App)
+const pinia = createPinia()
+
+// setup模式下没有store.$reset()方法，需要手动加上
+pinia.use(({store})=>{
+    const initialState = JSON.parse(JSON.stringify(store.$state));
+    store.$reset = ()=>{
+        store.$state = JSON.parse(JSON.stringify(initialState));
+    }
+})
 app.use(router)
 app.use(UndrawUi)
 app.use(pinia)
