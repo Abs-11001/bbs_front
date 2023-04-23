@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/layout/index.vue'
+import { checkToken } from "@/api/login/user";
 
 const routes = [
 
@@ -47,7 +48,7 @@ const routes = [
         path: '/editor',
         name: 'editor',
         component: () => import('@/pages/EditArtical/EditArtical.vue'),
-        meta: {fullScreen: true}
+        meta: {isLogin: true}
     },
     {
         path: '/login',
@@ -58,6 +59,50 @@ const routes = [
 const router = createRouter({
     history: createWebHashHistory(),
     routes,
+})
+
+// 切换路由时进行一些鉴权操作
+router.beforeEach(async (to, from) => {
+    // 如果to过去的页面不需要登录则直接跳转
+    if(!to.meta.isLogin) return
+
+    const token = localStorage.getItem('token')
+    const expireTime = localStorage.getItem('expireTime')
+    // 当前时间
+    const begin = new Date()
+    // token 有效时间
+    const end = new Date(expireTime)
+    // 如果当前时间 在有效时间之前...
+    if(begin <= end) {
+        let failFlag = true
+        // 必要要等待这个结束再去判断failFlag的值
+         await checkToken({token}).then(res => {
+            const { code, msg } = res
+            // debugger
+            if(code === 200 && msg === '验证成功') {
+                failFlag = false
+            }
+        }, err => {
+            console.log(err)
+        })
+        // 验证失败
+        if(failFlag){
+            return {
+                path: '/login',
+                query: {
+                    'redirect': to.name
+                }
+            }
+        }
+    } else {
+        // 不在有效期内，则重新登录
+        return {
+            path: '/login',
+            query: {
+                'redirect': to.name
+            }
+        }
+    }
 })
 
 
