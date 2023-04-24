@@ -80,7 +80,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import {useRouter} from "vue-router";
+import {useRouter, useRoute} from "vue-router";
 import md5 from 'js-md5';
 import {useLoginStore} from "@/store/login";
 import {useUserStore} from "@/store/user";
@@ -96,6 +96,7 @@ onMounted(() => {
   loginForm.loginPassword = password
 })
 
+const route = useRoute()
 const router = useRouter()
 // 实例化loginStore
 const loginStore = useLoginStore()
@@ -173,8 +174,10 @@ const login = async (formEl) => {
             message: '登录成功',
             type: 'success',
           })
+          const redirect = route.query.redirect || 'name'
+
           router.push({
-            name: 'home'
+            name: redirect
           })
         }
       }, err => {

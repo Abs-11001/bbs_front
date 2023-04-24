@@ -33,7 +33,6 @@ onMounted(() => {
     // 将route的获取放到宏任务中才能正常获取到path，不然就是一直获取到 "/"
     // const path = route.path
     const path = window.location.href
-    console.log(path)
     if(path === '/') activeMenu.value = '/home'
     if(path.indexOf('home') !== -1) activeMenu.value = '/home'
     if(path.indexOf('announcement') !== -1) activeMenu.value = '/announcement/newAnnouncement'

@@ -26,7 +26,7 @@
 
 <script setup>
 import {ref, onMounted} from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import {userLogout} from "@/api/user";
 import {ElMessage} from "element-plus";
 import {useLoginStore} from "@/store/login";
@@ -38,6 +38,7 @@ const loginStore = useLoginStore()
 const userStore = useUserStore()
 
 const token = ref(null)
+const route = useRoute()
 const router = useRouter()
 
 onMounted(() => {
@@ -47,7 +48,10 @@ onMounted(() => {
 // 处理登录
 function handleLogin() {
   router.push({
-    name: 'login'
+    name: 'login',
+    query: {
+      redirect: route.name
+    }
   })
 }
 // 处理退出
