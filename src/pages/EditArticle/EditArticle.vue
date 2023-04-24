@@ -60,7 +60,7 @@
                 :before-upload="beforeAvatarUpload"
                 :on-success="handleSuccess"
                 :data="meta"
-                action="http://file.upload.waheng.fun/articalCover/index.php"
+                action="http://file.upload.waheng.fun/articleCover/index.php"
                 :limit="1">
               <el-icon  class="avatar-uploader-icon"><Plus /></el-icon>
               <div class="el-upload__text">
@@ -109,7 +109,7 @@ import '@wangeditor/editor/dist/css/style.css'
 import {Plus} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus"; // 引入 css
 import { nanoid } from 'nanoid'
-import {publishArtical} from "@/api/artical";
+import {publishArticle} from "@/api/article";
 import {useRouter} from "vue-router";
 const router = useRouter()
 
@@ -141,7 +141,7 @@ const editorConfig = {
   placeholder: '请输入内容...',
   MENU_CONF: {
     uploadImage: {
-      server: 'http://file.upload.waheng.fun/articalImg/index.php',
+      server: 'http://file.upload.waheng.fun/articleImg/index.php',
       // 单个文件的最大体积限制，默认为 5M
       maxFileSize: 5 * 1024 * 1024, // 5M
       allowedFileTypes: ['image/*'],
@@ -235,7 +235,6 @@ const confirm = async (formEl) => {
         return
       }
       const html = editorRef.value.getHtml();
-      console.log(html)
       const data = {
         user_uuid: localStorage.getItem('uuid'),
         nanoid: nano_id,
@@ -245,7 +244,7 @@ const confirm = async (formEl) => {
         words_nubmer: contentSize.value,
         description: form.description,
       }
-      publishArtical(data).then(res => {
+      publishArticle(data).then(res => {
         if(res.code === 200) {
           ElMessage({
             showClose: true,

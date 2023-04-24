@@ -60,7 +60,7 @@ const routes = [
     {
         path: '/editor',
         name: 'editor',
-        component: () => import('@/pages/EditArtical/EditArtical.vue'),
+        component: () => import('@/pages/EditArticle/EditArticle.vue'),
         meta: {isLogin: true}
     },
     {
@@ -78,7 +78,6 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
     // 如果to过去的页面不需要登录则直接跳转
     if(!to.meta.isLogin) return
-    debugger
 
     const token = localStorage.getItem('token')
     const expireTime = localStorage.getItem('expireTime')

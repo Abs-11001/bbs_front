@@ -1,18 +1,18 @@
 import request from "@/utils/request";
 
 // 发布文章
-export function publishArtical(data) {
+export function publishArticle(data) {
     return request({
-        url: '/bbs/artical/publish',
+        url: '/bbs/article/publish',
         method: 'post',
         data: data
     })
 }
 
 // 获取文章列表
-export function getArticalList(query) {
+export function getArticleList(query) {
     return request({
-        url: '/bbs/artical/getArticalList',
+        url: '/bbs/article/getArticleList',
         method: 'get',
         params: query
     })

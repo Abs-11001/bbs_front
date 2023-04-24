@@ -3,7 +3,7 @@
     <el-tabs v-model="activeName" class="demo-tabs">
       <el-tab-pane label="最新" name="latest" v-infinite-scroll="loadLatest">
         <el-skeleton :rows="5" animated :throttle="500" :loading="loading" >
-          <artical-section-component v-for="item in latestData" :key="item.id" :data="item"></artical-section-component>
+          <article-section-component v-for="item in latestData" :key="item.id" :data="item"></article-section-component>
         </el-skeleton>
       </el-tab-pane>
       <el-tab-pane label="最热" name="hottest">
@@ -15,9 +15,9 @@
 
 <script lang="ts" setup>
 import {reactive, ref, onMounted} from "vue";
-import ArticalSectionComponent from "@/pages/informationSharing/artical/ArticalSectionComponent.vue";
-import { getArticalList } from "@/api/artical"
+import { getArticleList } from "@/api/article"
 import {ElMessage} from "element-plus";
+import ArticleSectionComponent from "@/pages/informationSharing/article/ArticleSectionComponent.vue";
 
 // 加载状态控制
 const loading = ref<boolean>(true)
@@ -42,7 +42,7 @@ const query = reactive({
 let moreFlag = true
 
 // 加载数据
-const loadList = () => getArticalList(query).then(res => {
+const loadList = () => getArticleList(query).then(res => {
   loading.value = false
   const { code, data } = res
   if(code === 200) {

@@ -10,6 +10,17 @@
 </template>
 
 <script setup>
+import {onMounted} from "vue";
+
+import {useRoute} from "vue-router";
+
+const route = useRoute()
+
+onMounted( () => {
+  // 从路由上取出文章nanoid
+  const nanoid = route.query && route.query.nanoid
+})
+
 
 </script>
 
