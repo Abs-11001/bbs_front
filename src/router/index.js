@@ -43,6 +43,16 @@ const routes = [
                 component: () => import('@/pages/informationSharing/index.vue'),
             },
             {
+                path: 'helpEachOther',
+                name: 'helpEachOther',
+                component: () => import('@/pages/helpEachOther/index.vue'),
+            },
+            {
+                path: 'treeHole',
+                name: 'treeHole',
+                component: () => import('@/pages/treeHole/index.vue'),
+            },
+            {
                 name: 'detailInformation',
                 path: 'detailInformation',
                 component: () => import('@/pages/detailArticle/index.vue')

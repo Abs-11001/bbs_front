@@ -49,7 +49,7 @@
           <el-form-item label="分类:" prop="category">
             <el-radio-group v-model="form.category">
               <el-radio-button label="信息共享">信息共享</el-radio-button>
-              <el-radio-button label="跳蚤市场">跳蚤市场</el-radio-button>
+              <el-radio-button label="互帮互助">互帮互助</el-radio-button>
               <el-radio-button label="暨阳树洞">暨阳树洞</el-radio-button>
             </el-radio-group>
           </el-form-item>
