@@ -151,7 +151,7 @@ const login = async (formEl) => {
           // 保存token
           localStorage.setItem('token', token)
           localStorage.setItem('expireTime', expire_time)
-          // 保存uuid
+          // 保存用户uuid
           localStorage.setItem('uuid', uuid)
           // 保存token信息
           loginStore.token = token

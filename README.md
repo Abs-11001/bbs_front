@@ -76,3 +76,9 @@ npm run build
 js端md5加密工具
 
 > https://github.com/emn178/js-md5
+
+7. nanoid
+
+一个小巧、安全、URL友好、唯一的 JavaScript 字符串ID生成器。
+
+> https://github.com/ai/nanoid/blob/HEAD/README.zh-CN.md

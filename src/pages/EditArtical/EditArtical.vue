@@ -8,7 +8,7 @@
 <template>
   <div class="container">
     <div class="header">
-      <input type="text" placeholder="请输入标题...">
+      <input type="text" v-model="form.title" placeholder="请输入标题...">
       <el-button @click="submit" type="primary">发布</el-button>
     </div>
     <div class="content">
@@ -29,9 +29,6 @@
         />
       </div>
     </div>
-<!--    <el-footer>-->
-<!--     字数：{{ contentSize }}-->
-<!--    </el-footer>-->
   </div>
   <el-drawer v-model="showDrawer">
     <template #header>
@@ -40,6 +37,15 @@
     <template #default>
       <div>
         <el-form :model="form" :rules="formRules" ref="formRef">
+          <el-form-item label="标题:" prop="title">
+            <el-input
+                v-model="form.title"
+                maxlength="30"
+                placeholder="请输入标题"
+                show-word-limit
+                type="text"
+            />
+          </el-form-item>
           <el-form-item label="分类:" prop="category">
             <el-radio-group v-model="form.category">
               <el-radio-button label="信息共享">信息共享</el-radio-button>
@@ -49,15 +55,20 @@
           </el-form-item>
           <el-form-item label="文章封面">
             <el-upload
-                class="upload-demo"
                 drag
+                list-type="picture-card"
                 :before-upload="beforeAvatarUpload"
+                :on-success="handleSuccess"
+                :data="meta"
+                action="http://file.upload.waheng.fun/articalCover/index.php"
                 :limit="1">
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="文章封面"/>
-              <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+              <el-icon  class="avatar-uploader-icon"><Plus /></el-icon>
+              <div class="el-upload__text">
+                拖拽 or <em>点击上传</em>
+              </div>
               <template #tip>
                 <div class="el-upload__tip">
-                  jpg/png files with a size less than 500kb
+                  仅支持一张2MB格式为jpg,jpeg,gif,png的图片
                 </div>
               </template>
             </el-upload>
@@ -68,6 +79,8 @@
                 :rows="10"
                 type="textarea"
                 placeholder="请输入文章摘要"
+                maxlength="100"
+                show-word-limit
             />
           </el-form-item>
           <el-divider></el-divider>
@@ -75,7 +88,7 @@
             {{ contentSize }}
           </el-form-item>
           <el-form-item label="当前时间：">
-            2023-04-22 01:02
+            {{currentTime}}
           </el-form-item>
         </el-form>
       </div>
@@ -90,20 +103,32 @@
 </template>
 
 <script setup>
-import {onBeforeUnmount, reactive, ref, shallowRef} from 'vue'
+import {onBeforeUnmount, reactive, ref, shallowRef, computed} from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import '@wangeditor/editor/dist/css/style.css'
-import {Plus} from "@element-plus/icons-vue"; // 引入 css
+import {Plus} from "@element-plus/icons-vue";
+import {ElMessage} from "element-plus"; // 引入 css
+import { nanoid } from 'nanoid'
+import {publishArtical} from "@/api/artical";
+import {useRouter} from "vue-router";
+const router = useRouter()
+
+// 生成用于标识该文章的唯一标识符
+const nano_id = nanoid()
+// 上传图片时携带的额外参数
+const meta = {
+  // 将token和nanoid同时传过去
+  token: localStorage.getItem('token'),
+  // 文章的唯一标识
+  nanoid: nano_id
+}
 
 // 设置文本编辑器的状态，default表示所有功能,simple表示简单版本
 const mode = ref('default')
-
 // 编辑器实例，必须用 shallowRef
 const editorRef = shallowRef()
-
 // 内容 HTML
 const valueHtml = ref('')
-
 // 去除不用的功能
 const toolbarConfig = {
   excludeKeys: [
@@ -111,37 +136,38 @@ const toolbarConfig = {
       'group-video'
   ]
 }
-
-// 设置 图片为base64存储
+// 设置 图片上传服务
 const editorConfig = {
   placeholder: '请输入内容...',
   MENU_CONF: {
     uploadImage: {
-      // 单个文件的最大体积限制，默认为 2M
-      maxFileSize: 5 * 1024 * 1024, // 1M
-      // 最多可上传几个文件，默认为 100
-      maxNumberOfFiles: 10,
-      // 当图片小于 5M时，使用 base64 格式存储
-      base64LimitSize: 5 * 1024 * 1024,
+      server: 'http://file.upload.waheng.fun/articalImg/index.php',
+      // 单个文件的最大体积限制，默认为 5M
+      maxFileSize: 5 * 1024 * 1024, // 5M
+      allowedFileTypes: ['image/*'],
+      // 自定义上传参数，例如传递验证的 token 等。参数会被添加到 formData 中，一起上传到服务端。
+      meta: meta,
+      // 将 meta 拼接到 url 参数中，默认 false
+      metaWithUrl: false,
     }
   }}
-
 // 组件销毁时，也及时销毁编辑器
 onBeforeUnmount(() => {
   const editor = editorRef.value
   if (editor == null) return
   editor.destroy()
 })
-
 // 组件创建时的回调
 const handleCreated = (editor) => {
   editorRef.value = editor // 记录 editor 实例，重要！
-
 }
+
 
 // 抽屉控制标识
 const showDrawer = ref(false)
+
 const form = reactive({
+  title: null,
   category: null,
   previewImg: null,
   wordCount: null,
@@ -150,6 +176,7 @@ const form = reactive({
 
 // 监控内容字数
 const contentSize = ref(0)
+// 内容改变时，同步更新文章概要内容，默认取文章前100字
 function textChange() {
   const text = editorRef.value.getText()
   contentSize.value = text.length
@@ -159,14 +186,17 @@ function textChange() {
 const formRef = ref(null)
 // 表单数据规则
 const formRules = reactive({
+  title: [
+    { required: true, message: '请输入文章标题', trigger: 'blur' },
+  ],
   category: [
-    { required: true, message: '请选择文章类别', trigger: 'change' },
+    { required: true, message: '请选择文章类别', trigger: 'blur' },
   ],
   description: [
     {
       required: true,
       message: '请输入文章摘要',
-      trigger: 'change',
+      trigger: 'blur',
     },
   ],
 })
@@ -178,19 +208,8 @@ function submit() {
 function cancel() {
   showDrawer.value = false
 }
-// 提交数据
-const confirm = async (formEl) => {
-  await formEl.validate((valid, fields) => {
-    if (valid) {
-      console.log('submit!')
-    } else {
-      return false
-    }
-  })
-}
-// 文章封面上传前
+// 文章封面上传前回调函数
 const beforeAvatarUpload = (rawFile) => {
-  console.log(rawFile.type)
   if (rawFile.type.toString().indexOf('image') === -1) {
     ElMessage.error('文章封面为图片,请上传图片')
     return false
@@ -200,6 +219,78 @@ const beforeAvatarUpload = (rawFile) => {
   }
   return true
 }
+const imageUrl = ref(null)
+function handleSuccess(uploadFile) {
+  if(uploadFile.data) imageUrl.value = `http://file.upload.waheng.fun/` + uploadFile.data
+}
+
+// 提交数据
+const confirm = async (formEl) => {
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      const t = valueHtml.value.replaceAll('<p><br></p>', '')
+      if(valueHtml.value.length <= 7 || t.length === 0) {
+        // wangEditor 默认带有<p><br></p> html内容
+        ElMessage.error("请输入文章内容")
+        return
+      }
+      const html = editorRef.value.getHtml();
+      console.log(html)
+      const data = {
+        user_uuid: localStorage.getItem('uuid'),
+        nanoid: nano_id,
+        title: form.title,
+        category: form.category,
+        content: html,
+        words_nubmer: contentSize.value,
+        description: form.description,
+      }
+      publishArtical(data).then(res => {
+        if(res.code === 200) {
+          ElMessage({
+            showClose: true,
+            message: '发布成功',
+            type: 'success',
+          })
+          router.push({
+            name: 'home'
+          })
+        }else{
+          ElMessage({
+            showClose: true,
+            message: '发布失败，请稍后重试',
+            type: 'warning',
+          })
+        }
+      }, err => {
+        console.log(err)
+      })
+    } else {
+      return false
+    }
+  })
+}
+
+const currentTime = computed(() => {
+  let myDate = new Date();	//创建Date对象
+  let Y = myDate.getFullYear();   //获取当前完整年份
+  let M = myDate.getMonth() + 1;  //获取当前月份
+  let D = myDate.getDate();   //获取当前日1-31
+  let H = myDate.getHours();  //获取当前小时
+  let i = myDate.getMinutes();    //获取当前分钟
+  let s = myDate.getSeconds();    //获取当前秒数
+  // 月份不足10补0
+  if(M < 10) M = '0' + M;
+  // 日不足10补0
+  if(D < 10) D = '0' + D;
+  // 小时不足10补0
+  if(H < 10) H = '0' + H;
+  // 分钟不足10补0
+  if(i < 10) i = '0' + i;
+  // 秒数不足10补0
+  if(s < 10) s = '0' +s;
+  return Y+'-'+M+'-'+D+' '+H+':'+i+':'+s;
+})
 </script>
 
 <style lang="less" scoped>
