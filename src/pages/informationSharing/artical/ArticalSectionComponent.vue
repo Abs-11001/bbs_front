@@ -10,9 +10,9 @@
     <div class="section-info">
       <span class="nick-name">{{ data.nickName }}</span>
       <span>|</span>
-      <span class="time">{{ data.time }}</span>
+      <span class="time">{{ data.publishTime }}</span>
     </div>
-    <div class="section-body">
+    <div class="section-body" @click="goToDetail(data.nanoid)">
       <div class="section-left">
         <h3 class="section-title">{{ data.title }}</h3>
         <div class="section-description">
@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div class="section-right">
+      <div class="section-right" v-if="data.preview">
         <el-image :src="data.preview"></el-image>
       </div>
     </div>
@@ -42,10 +42,20 @@
 </template>
 
 <script  setup>
+import {useRouter} from "vue-router";
 import {ThumbsUp, PreviewOpen, Comment} from "@icon-park/vue-next";
+
 defineProps({
   data: Object
 })
+
+const router = useRouter()
+
+// 跳转文章详情
+const goToDetail = (nanoid) => {
+  let routeData = router.resolve({ name: 'detailInformation', query: { nanoid } });
+  window.open(routeData.href, '_blank');
+}
 </script>
 
 <style lang="less" scoped>
@@ -53,7 +63,7 @@ defineProps({
     padding: 10px 10px 0 10px;
     cursor: pointer;
     .section-info{
-      max-width: 162px;
+      max-width: 220px;
       font-size: 13px;
       line-height: 22px;
       color: #4e5969;

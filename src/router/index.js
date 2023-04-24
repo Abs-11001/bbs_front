@@ -40,7 +40,20 @@ const routes = [
             {
                 path: 'informationSharing',
                 name: 'informationSharing',
-                component: () => import('@/pages/informationSharing/index.vue')
+                component: () => import('@/pages/informationSharing/index.vue'),
+                redirect: {name: 'allInformation'},
+                children: [
+                    {
+                        name: 'allInformation',
+                        path: 'allInformation',
+                        component: () => import('@/pages/informationSharing/allInformation/index.vue')
+                    },
+                    {
+                        name: 'detailInformation',
+                        path: 'detailInformation',
+                        component: () => import('@/pages/informationSharing/detailInfomation/index.vue')
+                    },
+                ]
             },
         ]
     },
@@ -65,6 +78,7 @@ const router = createRouter({
 router.beforeEach(async (to, from) => {
     // 如果to过去的页面不需要登录则直接跳转
     if(!to.meta.isLogin) return
+    debugger
 
     const token = localStorage.getItem('token')
     const expireTime = localStorage.getItem('expireTime')
