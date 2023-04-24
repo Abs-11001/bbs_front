@@ -19,17 +19,17 @@
           {{ data.description }}
         </div>
         <div class="section-action">
-          <div class="view">
-            <preview-open theme="outline" size="26" fill="#333" :strokeWidth="2"/>
-            {{ data.view }}
+          <div class="action view">
+            <preview-open theme="outline" size="22" fill="#333" :strokeWidth="2"/>
+            <span>{{ data.view }}</span>
           </div>
-          <div class="like">
-            <thumbs-up theme="outline" size="22" fill="#333" :strokeWidth="2"/>
-            {{ data.like }}
+          <div class="action like">
+            <thumbs-up theme="outline" size="20" fill="#333" :strokeWidth="2"/>
+            <span>{{ data.like }}</span>
           </div>
-          <div class="comment">
-            <comment theme="outline" size="22" fill="#333" :strokeWidth="2"/>
-            {{ data.comment }}
+          <div class="action comment">
+            <comment theme="outline" size="18" fill="#333" :strokeWidth="2"/>
+            <span>{{ data.comment }}</span>
           </div>
         </div>
       </div>
@@ -112,9 +112,17 @@ const goToDetail = (nanoid) => {
           margin: 10px 0;
           display: flex;
           align-items: center;
-          div{
+          .action{
+            display: flex;
+            align-items: center;
             margin: 0 10px;
             cursor: pointer;
+            span{
+              margin-left: 5px;
+            }
+            &:hover{
+              color: #79bbff;
+            }
           }
         }
       }
