@@ -6,13 +6,11 @@
 */
 
 <template>
-
+<div>dsfsdf</div>
 </template>
 
-<script>
-export default {
-  name: "DetailInformation"
-}
+<script setup>
+
 </script>
 
 <style scoped>
