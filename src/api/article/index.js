@@ -17,3 +17,12 @@ export function getArticleList(query) {
         params: query
     })
 }
+
+// 获取详细文章内容
+export function getDetailArticle(query) {
+    return request({
+        url: '/bbs/article/getDetailArticle',
+        method: 'get',
+        params: query
+    })
+}
