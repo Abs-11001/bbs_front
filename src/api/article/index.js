@@ -26,3 +26,12 @@ export function getDetailArticle(query) {
         params: query
     })
 }
+
+// 记录文章浏览记录
+export function addArticleView(data) {
+    return request({
+        url: '/bbs/article/addArticleView',
+        method: 'post',
+        data: data
+    })
+}

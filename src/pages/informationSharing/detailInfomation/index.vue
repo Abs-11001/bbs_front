@@ -38,7 +38,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import {useRoute} from "vue-router";
-import {getDetailArticle} from "@/api/article";
+import {getDetailArticle, addArticleView} from "@/api/article";
 import {ThumbsUp, ShareOne} from "@icon-park/vue-next";
 
 
@@ -56,6 +56,7 @@ const data = reactive({
   view: 0,
   publishTime: null
 })
+
 
 // 从路由上取出文章nanoid
 const nanoid = route.query && route.query.nanoid
@@ -78,6 +79,10 @@ getDetailArticle({nanoid}).then(res => {
   console.log(err)
   fullscreenLoading.value = false
 })
+
+addArticleView({article_nanoid: nanoid, view_user_uuid: localStorage.getItem('uuid')}).then(res => {
+
+}, err => {})
 
 
 </script>
