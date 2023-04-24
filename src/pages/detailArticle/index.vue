@@ -6,7 +6,7 @@
 */
 
 <template>
-  <div class="container" v-loading.fullscreen.lock="fullscreenLoading">
+  <div class="container width90" v-loading.fullscreen.lock="fullscreenLoading">
     <div class="title">
       <h1>{{ data.title }}</h1>
     </div>

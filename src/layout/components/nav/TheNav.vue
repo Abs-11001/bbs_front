@@ -10,9 +10,8 @@
             <el-menu-item index="/announcement/allAnnouncement">全部公告</el-menu-item>
           </el-sub-menu>
           <el-menu-item index="/informationSharing">信息共享</el-menu-item>
-          <el-menu-item index="4">跳蚤市场</el-menu-item>
-          <el-menu-item index="6">互帮互助</el-menu-item>
-          <el-menu-item index="5">暨阳树洞</el-menu-item>
+          <el-menu-item index="/helpEachOther">互帮互助</el-menu-item>
+          <el-menu-item index="/treeHole">暨阳树洞</el-menu-item>
       </el-menu>
       <el-button :icon="EditPen" color="#e8f5e9" @click="toEditor">写文章</el-button>
     </div>
@@ -37,6 +36,8 @@ onMounted(() => {
     if(path.indexOf('home') !== -1) activeMenu.value = '/home'
     if(path.indexOf('announcement') !== -1) activeMenu.value = '/announcement/newAnnouncement'
     if(path.indexOf('informationSharing') !== -1) activeMenu.value = '/informationSharing'
+    if(path.indexOf('helpEachOther') !== -1) activeMenu.value = '/helpEachOther'
+    if(path.indexOf('treeHole') !== -1) activeMenu.value = '/treeHole'
   }, 0)
 })
 

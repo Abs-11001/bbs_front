@@ -41,19 +41,11 @@ const routes = [
                 path: 'informationSharing',
                 name: 'informationSharing',
                 component: () => import('@/pages/informationSharing/index.vue'),
-                redirect: {name: 'allInformation'},
-                children: [
-                    {
-                        name: 'allInformation',
-                        path: 'allInformation',
-                        component: () => import('@/pages/informationSharing/allInformation/index.vue')
-                    },
-                    {
-                        name: 'detailInformation',
-                        path: 'detailInformation',
-                        component: () => import('@/pages/informationSharing/detailInfomation/index.vue')
-                    },
-                ]
+            },
+            {
+                name: 'detailInformation',
+                path: 'detailInformation',
+                component: () => import('@/pages/detailArticle/index.vue')
             },
         ]
     },
