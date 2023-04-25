@@ -12,7 +12,6 @@ import {reactive, ref} from 'vue'
 import { UComment, UCommentNav, CommentApi, ConfigApi, SubmitParamApi, UToast, createObjectURL } from 'undraw-ui'
 import {useLoginStore} from "@/store/login";
 import {useUserStore} from "@/store/user";
-import {storeToRefs} from "pinia";
 import {currentTime} from "@/utils/customTime";
 import { nanoid } from 'nanoid'
 import  {useRoute} from "vue-router";
@@ -27,8 +26,6 @@ const route = useRoute()
 // uuid是通知公告的  nanoid 是文章的
 const article_id = route.query.uuid || route.query.nanoid
 
-const {uuid, nickName, avatar} = storeToRefs(userStore)
-
 //排序
 const latest = ref(true)
 const sorted = (latest: boolean) => {
@@ -38,11 +35,11 @@ const sorted = (latest: boolean) => {
 const config = reactive<ConfigApi>({
   user: {
     // 评论的用户uuid
-    id: uuid.value,
+    id: userStore.uuid,
     // 评论的用户的昵称
-    username: nickName.value,
+    username: userStore.nickName,
     // avatar: avatar.value,
-    avatar: "http://www.waheng.fun/asset/ico/wangyiyun.png",
+    avatar: userStore.avatar,
     // 评论id数组 建议:存储方式用户uid和评论id组成关系,根据用户uid来获取对应点赞评论id,然后加入到数组中返回
     // 当前用户对该页面的评论的点赞的评论的id
     likeIds: [1, 2, 3, 4, 5]

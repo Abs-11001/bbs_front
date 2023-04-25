@@ -22,6 +22,7 @@
       </div>
     </div>
     <div class="content" v-html="data.content"></div>
+    <the-comment></the-comment>
     <el-tooltip content="点赞" placement="top">
       <div id="source" class="fixed" @click="goToSource">
         <thumbs-up theme="outline" size="24" fill="#409EFC"/>
@@ -38,8 +39,10 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import {useRoute} from "vue-router";
+import TheComment from "@/components/comment/TheComment.vue";
 import {getDetailArticle, addArticleView} from "@/api/article";
 import {ThumbsUp, ShareOne} from "@icon-park/vue-next";
+import {useUserStore} from "@/store/user";
 
 
 const route = useRoute()
@@ -56,6 +59,8 @@ const data = reactive({
   view: 0,
   publishTime: null
 })
+
+const userStore = useUserStore()
 
 
 // 从路由上取出文章nanoid
@@ -80,7 +85,7 @@ getDetailArticle({nanoid}).then(res => {
   fullscreenLoading.value = false
 })
 
-addArticleView({article_nanoid: nanoid, view_user_uuid: localStorage.getItem('uuid')}).then(res => {
+addArticleView({article_nanoid: nanoid, view_user_uuid: userStore.uuid || localStorage.getItem('uuid')}).then(res => {
 
 }, err => {})
 

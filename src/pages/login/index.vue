@@ -88,12 +88,11 @@ import {User, Lock} from "@element-plus/icons-vue";
 import {ElMessage} from "element-plus";
 import {userLogin, userRegister} from "@/api/user";
 
+const useStore = useUserStore()
+
 onMounted(() => {
   // 读取用户信息，记住我选项保存后的内容
-  const user = localStorage.getItem('user')
-  const password = localStorage.getItem('password')
-  loginForm.loginUserName = user
-  loginForm.loginPassword = password
+  loginForm.loginUserName = useStore.userName
 })
 
 const route = useRoute()
@@ -150,10 +149,10 @@ const login = async (formEl) => {
         if(code === 200) {
           const {uuid, user_name, nick_name, avatar, token, expire_time } = data
           // 保存token
-          localStorage.setItem('token', token)
-          localStorage.setItem('expireTime', expire_time)
-          // 保存用户uuid
-          localStorage.setItem('uuid', uuid)
+          // localStorage.setItem('token', token)
+          // localStorage.setItem('expireTime', expire_time)
+          // // 保存用户uuid
+          // localStorage.setItem('uuid', uuid)
           // 保存token信息
           loginStore.token = token
           loginStore.expireTime = expire_time
@@ -163,13 +162,13 @@ const login = async (formEl) => {
           userStore.nickName = nick_name
           userStore.avatar = 'http://file.upload.waheng.fun/' + avatar
           // 判断用户是否勾选了记住我
-          if(loginForm.loginRemember) {
-            localStorage.setItem('user', loginForm.loginUserName)
-            localStorage.setItem('password', loginForm.loginPassword)
-          }else {
-            localStorage.setItem('user', '')
-            localStorage.setItem('password', '')
-          }
+          // if(loginForm.loginRemember) {
+          //   // localStorage.setItem('user', loginForm.loginUserName)
+          //   // localStorage.setItem('password', loginForm.loginPassword)
+          // }else {
+          //   // localStorage.setItem('user', '')
+          //   // localStorage.setItem('password', '')
+          // }
           ElMessage({
             message: '登录成功',
             type: 'success',

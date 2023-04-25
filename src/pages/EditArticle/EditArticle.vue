@@ -112,15 +112,19 @@ import { nanoid } from 'nanoid'
 import {publishArticle} from "@/api/article";
 import {useRouter} from "vue-router";
 import {currentTime} from "@/utils/customTime";
+import {useLoginStore} from "@/store/login";
+import {useUserStore} from "@/store/user";
 
 const router = useRouter()
+const loginStore = useLoginStore()
+const userStore = useUserStore()
 
 // 生成用于标识该文章的唯一标识符
 const nano_id = nanoid()
 // 上传图片时携带的额外参数
 const meta = {
   // 将token和nanoid同时传过去
-  token: localStorage.getItem('token'),
+  token: loginStore.token || localStorage.getItem('token'),
   // 文章的唯一标识
   nanoid: nano_id
 }
@@ -238,7 +242,7 @@ const confirm = async (formEl) => {
       }
       const html = editorRef.value.getHtml();
       const data = {
-        user_uuid: localStorage.getItem('uuid'),
+        user_uuid: userStore.uuid || localStorage.getItem('uuid'),
         nanoid: nano_id,
         title: form.title,
         category: form.category,

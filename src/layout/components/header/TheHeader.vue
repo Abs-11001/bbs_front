@@ -64,15 +64,16 @@ function handleLogin() {
 }
 // 处理退出
 function handleLogout() {
-  const uuid = localStorage.getItem('uuid')
+  // const uuid = localStorage.getItem('uuid')
+  const uuid = userStore.uuid
   userLogout({uuid}).then(res => {
     const {code, msg} = res
     if(code === 200) {
       // 退出成功清除无用数据
       token.value = null
-      localStorage.removeItem('token')
-      localStorage.removeItem('expireTime')
-      localStorage.removeItem('uuid')
+      // localStorage.removeItem('token')
+      // localStorage.removeItem('expireTime')
+      // localStorage.removeItem('uuid')
       loginStore.$reset()
       userStore.$reset()
       ElMessage({

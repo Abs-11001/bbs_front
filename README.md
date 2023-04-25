@@ -88,3 +88,4 @@ js端md5加密工具
 pinia 数据持久化插件
 
 > https://github.com/Seb-L/pinia-plugin-persist
+> https://seb-l.github.io/pinia-plugin-persist/advanced/partial-state.html

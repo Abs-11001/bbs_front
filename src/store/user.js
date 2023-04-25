@@ -15,8 +15,8 @@ export const useUserStore = defineStore('user', {
         // 开启持久化
         enabled: true,
         // // 选择存储方式和内容
-        // strategies: [
-        //     { storage: localStorage, paths: ['user'] }
-        // ]
+        strategies: [
+            { storage: localStorage, paths: ['uuid', 'userName', 'nickName', 'avatar'] }
+        ]
     }
 })
