@@ -7,10 +7,10 @@
         <div id="header_right">
           <div id="header_img">
             <el-dropdown>
-              <img src="./img/default.jpeg" alt="用户头像">
+              <img :src="getAvatar" alt="用户头像">
               <template #dropdown>
                 <el-dropdown-menu v-if="token">
-                  <el-dropdown-item>个人空间</el-dropdown-item>
+                  <el-dropdown-item @click="handleIndividual">个人空间</el-dropdown-item>
                   <el-dropdown-item @click="handleLogout">退出</el-dropdown-item>
                 </el-dropdown-menu>
                 <el-dropdown-menu v-else>
@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import {ref, onMounted} from "vue";
+import {ref, onMounted, computed} from "vue";
 import { useRouter, useRoute } from "vue-router";
 import {userLogout} from "@/api/user";
 import {ElMessage} from "element-plus";
@@ -42,7 +42,15 @@ const route = useRoute()
 const router = useRouter()
 
 onMounted(() => {
-  token.value = localStorage.getItem('token')
+  token.value = loginStore.token || localStorage.getItem('token')
+})
+
+const getAvatar = computed(() => {
+  if(token.value === null || token.value === '') {
+    return 'http://file.upload.waheng.fun/avatar/image/default.jpg'
+  } else {
+    return userStore.avatar
+  }
 })
 
 // 处理登录
@@ -71,6 +79,7 @@ function handleLogout() {
         message: msg,
         type: 'success',
       })
+      window.location.assign("/home")
     }else {
       ElMessage.error(msg)
     }
@@ -78,6 +87,12 @@ function handleLogout() {
     console.log(err)
   })
 
+}
+// 个人中心
+function handleIndividual() {
+  router.push({
+    name: 'individualCenter',
+  })
 }
 
 </script>
