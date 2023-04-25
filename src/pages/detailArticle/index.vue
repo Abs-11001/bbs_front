@@ -13,7 +13,7 @@
     <div class="user">
       <div class="left">
         <div class="block">
-          <el-avatar :size="50" src="http://www.waheng.fun/asset/ico/github.png" />
+          <el-avatar :size="50" :src="data.avatar" />
         </div>
       </div>
       <div class="right">
