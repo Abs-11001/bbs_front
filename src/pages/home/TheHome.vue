@@ -33,6 +33,9 @@
 import { ref, onMounted } from 'vue'
 import TheCarousel from "@/layout/components/carousel/TheCarousel.vue";
 import PlateItem from "@/pages/home/plate/PlateItem.vue";
+import {useUserStore} from "@/store/user";
+const userStore = useUserStore()
+// console.log(userStore.uuid)
 
 const loading = ref(true)
 /** <768px 响应式栅格数或者栅格属性对象 */

@@ -1,9 +1,10 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/layout/index.vue'
 import { checkToken } from "@/api/user";
+import {useLoginStore} from "@/store/login";
+
 
 const routes = [
-
     {
         path: '/',
         redirect: 'home',
@@ -78,11 +79,14 @@ const router = createRouter({
 
 // 切换路由时进行一些鉴权操作
 router.beforeEach(async (to, from) => {
+    const loginStore = useLoginStore()
+
     // 如果to过去的页面不需要登录则直接跳转
     if(!to.meta.isLogin) return
 
-    const token = localStorage.getItem('token')
-    const expireTime = localStorage.getItem('expireTime')
+    const token = loginStore.token || localStorage.getItem('token')
+    const expireTime = loginStore.expireTime || localStorage.getItem('expireTime')
+    // const token = userStore
     // 当前时间
     const begin = new Date()
     // token 有效时间

@@ -82,3 +82,9 @@ js端md5加密工具
 一个小巧、安全、URL友好、唯一的 JavaScript 字符串ID生成器。
 
 > https://github.com/ai/nanoid/blob/HEAD/README.zh-CN.md
+
+8.  pinia-plugin-persist
+
+pinia 数据持久化插件
+
+> https://github.com/Seb-L/pinia-plugin-persist

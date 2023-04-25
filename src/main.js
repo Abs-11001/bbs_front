@@ -3,6 +3,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
+import piniaPluginPersist   from 'pinia-plugin-persist'
+
 // 评论相关组件级样式
 import UndrawUi from 'undraw-ui'
 import 'undraw-ui/dist/style.css'
@@ -20,6 +22,9 @@ pinia.use(({store})=>{
         store.$state = JSON.parse(JSON.stringify(initialState));
     }
 })
+// 使用持久化插件
+pinia.use(piniaPluginPersist)
+
 app.use(router)
 app.use(UndrawUi)
 app.use(pinia)
