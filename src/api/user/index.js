@@ -35,3 +35,22 @@ export function userLogout(data) {
         data: data
     })
 }
+
+
+// 通过uuid查询用户信息
+export function getUserInformation(data) {
+    return request({
+        url: '/bbs/user/getUserInformation',
+        method: 'get',
+        params: data
+    })
+}
+
+// 修改用户信息
+export function updateUserInformation(data) {
+    return request({
+        url: '/bbs/user/updateUserInformation',
+        method: 'post',
+        data: data
+    })
+}

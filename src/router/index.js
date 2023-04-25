@@ -58,6 +58,12 @@ const routes = [
                 path: 'detailInformation',
                 component: () => import('@/pages/detailArticle/index.vue')
             },
+            {
+                name: 'individualCenter',
+                path: 'individualCenter',
+                component: () => import('@/pages/individualCenter/index.vue'),
+                meta: {isLogin: true}
+            },
         ]
     },
     {
@@ -70,7 +76,7 @@ const routes = [
         path: '/login',
         name: 'login',
         component: () => import('@/pages/login/index.vue')
-    }
+    },
 ]
 const router = createRouter({
     history: createWebHashHistory(),
