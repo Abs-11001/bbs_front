@@ -161,7 +161,7 @@ const login = async (formEl) => {
           userStore.uuid = uuid
           userStore.userName = user_name
           userStore.nickName = nick_name
-          userStore.avatar = avatar
+          userStore.avatar = 'http://file.upload.waheng.fun/' + avatar
           // 判断用户是否勾选了记住我
           if(loginForm.loginRemember) {
             localStorage.setItem('user', loginForm.loginUserName)
