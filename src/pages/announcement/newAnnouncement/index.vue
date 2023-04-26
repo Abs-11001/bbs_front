@@ -66,7 +66,17 @@ const fullscreenLoading = ref(true)
 getAnnouncementKey().then(res => {
   const { code, data } = res
   if(code === 200) {
-    announcementKey.value = data
+    const showData = []
+    data.forEach(item => {
+      let dep = {
+        idx: item.idx,
+        department: item.department,
+        // 过滤掉show = false的数据，因为show=false是不显示的数据
+        plate: item['plate'].filter(plate => plate.show === true)
+      }
+      showData.push(dep)
+    })
+    announcementKey.value = showData
     // 先创建出每个部门的对象，以便于模板遍历不会报错
     data.forEach(item => {
       announcements.value[item.department] = {}
