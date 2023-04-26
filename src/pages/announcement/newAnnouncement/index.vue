@@ -95,7 +95,7 @@ function change(activeName) {
       // 先保存已经存在的数据
       announcements.value[department] = {...announcements.value[department]}
       // 再添加新数据
-      announcements.value[department][plate] = data.announcements
+      announcements.value[department][plate] = data.announcements.filter(item => item.del === false)
     }
     // 关闭加载状态
     fullscreenLoading.value = false

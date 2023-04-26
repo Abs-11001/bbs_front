@@ -46,7 +46,7 @@ const loadList = () => getArticleList(query).then(res => {
   loading.value = false
   const { code, data } = res
   if(code === 200) {
-    latestData.value = [...latestData.value, ...data]
+    latestData.value = [...latestData.value, ...data['dataList']]
   }
   else {
     // 如果code不是200 就设数据加载完成了

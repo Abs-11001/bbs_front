@@ -160,7 +160,7 @@ function getData() {
     fullscreenLoading.value = false
     const { data: {total: tota, announcements} } = res
     total.value = tota
-    announcementData.value = announcements
+    announcementData.value = announcements.filter(item => item.del === false)
   }, err => {
     console.log(err)
     fullscreenLoading.value = false
