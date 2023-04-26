@@ -107,7 +107,7 @@ getAnnouncementKey().then(res => {
       label: item.department
     })
     plateOptions.value.push({
-      [item.department]: item.plate
+      [item.department]: item.plate.filter(item => item.show === true)
     })
   })
 }, err => {
