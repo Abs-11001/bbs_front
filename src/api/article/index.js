@@ -35,3 +35,12 @@ export function addArticleView(data) {
         data: data
     })
 }
+
+// 获取首页最新最热数据
+export function getHomeArticle(query) {
+    return request({
+        url: '/bbs/article/getHomeArticle',
+        method: 'get',
+        params: query
+    })
+}
