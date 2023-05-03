@@ -34,7 +34,7 @@
                 <h3 class="title">人气热门</h3>
               </div>
               <div class="content-box">
-                <el-card shadow="hover" v-for="item in data.latest" @click="goToDetail(item.nanoid)" :key="item.idx">
+                <el-card shadow="hover" v-for="item in data.hottest" @click="goToDetail(item.nanoid)" :key="item.idx">
                   <div class="left">
                     <div class="content-title">{{ item.title }}</div>
                     <div class="content-view">
