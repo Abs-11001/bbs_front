@@ -24,7 +24,7 @@ const imgList = reactive([
 // 指向image实例，方便通过dom元素获得图片的高度
 const myImage = ref(null)
 // carousel的高度
-const carouselHeight = ref()
+const carouselHeight = ref('300px')
 function loadHeight() {
   // console.log(myImage.value[0].$el.offsetHeight)
   // 根据图片的高度，从而设置carousel的高度
