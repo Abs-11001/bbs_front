@@ -1,24 +1,6 @@
 <template>
   <div class="search-content quick-news width90">
     <div class="left">
-<!--      <div class="search-input">-->
-<!--        <el-input-->
-<!--            v-model.trim="search"-->
-<!--            class="w-50 m-2"-->
-<!--            clearable-->
-<!--            placeholder="请输入要搜索的内容">-->
-<!--          <template #append>-->
-<!--            <el-button :icon="Search"/>-->
-<!--          </template>-->
-<!--        </el-input>-->
-<!--      </div>-->
-<!--      <div class="hot-words">-->
-<!--        <span>热搜：</span>-->
-<!--        <a href="http://www.waheng.fun" target="_blank" title="暨阳1212121212致用啊">{{ hotWordsFilter('暨阳1212121212致用啊') }}</a>-->
-<!--        <a href="http://www.waheng.fun" target="_blank" title="听">{{ hotWordsFilter('听') }}</a>-->
-<!--        <a href="http://www.waheng.fun" target="_blank" title="暨阳致用">{{ hotWordsFilter('暨阳致用') }}</a>-->
-<!--        <a href="http://www.waheng.fun" target="_blank" title="校园">{{ hotWordsFilter('校园') }}</a>-->
-<!--      </div>-->
       <div class="search-input">
         <u-search :config="config" @submit="submit"></u-search>
       </div>
@@ -27,54 +9,71 @@
       <div class="news">
         <el-carousel height="30px" direction="vertical" :autoplay="true" :interval="2500">
           <el-carousel-item v-for="n in news" :key="n.idx">
-<!--            <h3 text="2xl" justify="center">{{ n.title }}</h3>-->
-            <a :href="n.url" :title="n.title">
+            <a :title="n.title" @click="openDialog(n)">
               <span class="news-item-content">{{ n.title }}</span>
-              <span class="news-item-time">({{ n.time }})</span>
+              <span class="news-item-time">({{ n.addTime }})</span>
             </a>
           </el-carousel-item>
         </el-carousel>
       </div>
     </div>
   </div>
+  <el-dialog
+      class="text-carousel-dialog"
+      v-model="dialog.visible"
+      :title="dialog.title">
+    <div v-html="dialog.content"></div>
+    <div class="publish-time">
+      发布时间：{{ dialog.publishTime }}
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="dialog.visible = false">看完了</el-button>
+      </span>
+    </template>
+  </el-dialog>
 <!--  <el-divider class="width90"></el-divider>-->
 </template>
 
-<script setup lang="ts">
+<script setup>
   import { ref, reactive } from 'vue'
   import {USearch} from "undraw-ui";
-  import {SearchConfig} from "undraw-ui";
+  import {getTextCarousel} from '@/api/carousel/index.js'
+
+  const dialog = reactive({
+    visible: false,
+    title: null,
+    content: null,
+    publishTime: null
+  })
+  const news = reactive([])
+
+  getTextCarousel().then(res => {
+    const { code, data } = res
+    if(code === 200) {
+      data.forEach(item => {
+        // 过滤被禁用的
+        if(!item.del) news.push(item)
+      })
+    }
+  })
+
+  function openDialog(data) {
+    dialog.title = data.title
+    dialog.content = data.content
+    dialog.publishTime = data.addTime
+    dialog.visible = true
+  }
 
   const search = ref('')
-  const news = reactive([
-    {
-      idx: 1,
-      title: '人文学院、马克思主义学院赴诸暨市文化广电旅游局开展访企拓岗促就业专项行动',
-      url: 'http://www.waheng.fun',
-      time: '2023-03-12'
-    },
-    {
-      idx: 2,
-      title: '关于2023届省级优秀毕业生及院级优秀毕业生推荐名单的公示',
-      url: 'http://www.waheng.fun',
-        time: '2023-03-12'
-    },
-    {
-      idx: 3,
-      title: '商学院2023届绍兴市优秀毕业生 评比结果公示',
-      url: 'http://www.waheng.fun',
-        time: '2023-03-12'
-    },
-  ])
-
-  function hotWordsFilter(hotWord: String) {
+  function hotWordsFilter(hotWord) {
     // 截取热搜的前四位关键字
     let suffix = ''
     if(hotWord.length > 4) suffix = '...'
     return hotWord.substring(0, 4) + suffix
   }
 
-  const config = ref<SearchConfig>({
+  const config = ref({
     keywords: ['斗罗大陆', '斗破苍穹', '吞噬星空', '凡人修仙传', '一念永恒'], // 搜索框关键字滚动
     hotSearchList: [
       '斗罗大陆',
@@ -156,6 +155,10 @@
         }
       }
     }
+  }
+  .publish-time{
+    text-align: right;
+    font-size: 13px;
   }
   .el-divider{
     margin: 5px auto;

@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import {ref, reactive, onMounted, nextTick } from 'vue'
+import {ref, onMounted, nextTick } from 'vue'
 import {getImageCarousel} from "@/api/carousel";
 
 const imgList = ref([])

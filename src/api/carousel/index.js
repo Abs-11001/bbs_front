@@ -8,3 +8,12 @@ export function getImageCarousel(data) {
         params: data
     })
 }
+
+// 获取文字轮播数据
+export function getTextCarousel(data) {
+    return request({
+        url: '/bbs/carousel/getTextCarousel',
+        method: 'get',
+        params: data
+    })
+}
