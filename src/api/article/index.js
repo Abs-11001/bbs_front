@@ -44,3 +44,13 @@ export function getHomeArticle(query) {
         params: query
     })
 }
+
+
+// 获取用户发布的文章列表
+export function getArticleListByUserUuid(query) {
+    return request({
+        url: '/bbs/article/getArticleListByUserUuid',
+        method: 'get',
+        params: query
+    })
+}

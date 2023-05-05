@@ -12,7 +12,7 @@
               <el-icon><setting /></el-icon>
               <span>账号设置</span>
             </el-menu-item>
-            <el-menu-item index="3">
+            <el-menu-item index="3" @click="show('article-list')">
               <el-icon><Document /></el-icon>
               <span>我的帖子</span>
             </el-menu-item>
@@ -115,6 +115,10 @@
               </el-form-item>
             </el-form>
           </div>
+          <div v-show="pageShow.article"  class="article-list">
+            <h3>我的帖子</h3>
+            <article-section-component v-for="item in articleList" :key="item.id" :data="item"></article-section-component>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -128,19 +132,25 @@ import {reactive, computed, ref} from "vue";
 import {getUserInformation, updateUserInformation, updateUserPassword} from "@/api/user";
 import {User,Document, Setting} from "@element-plus/icons-vue";
 import md5 from 'js-md5';
+import ArticleSectionComponent from "@/components/article/ArticleSectionComponent.vue";
+import {getArticleListByUserUuid} from "@/api/article";
 
 const pageShow = reactive({
   individual: true,
   account: false,
+  article: false,
 })
 
 function show(tab) {
   pageShow.individual = false
   pageShow.account = false
+  pageShow.article = false
   if(tab === 'individual') {
     pageShow.individual = true
   } else if(tab === 'account-setting') {
     pageShow.account = true
+  } else if(tab === 'article-list') {
+    pageShow.article = true
   }
 }
 
@@ -282,6 +292,12 @@ function handleAccountUpdate() {
     }
   })
 }
+
+// 个人发布文章列表
+const articleList = ref(null)
+getArticleListByUserUuid({user_uuid: uuid}).then(res => {
+  articleList.value = res.data
+})
 </script>
 
 <style lang="less" scoped>
