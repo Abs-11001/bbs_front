@@ -71,9 +71,9 @@ getDetailArticle({nanoid}).then(res => {
   if(code === 200) {
     data.idx = d.idx
     data.nanoid = d.nanoid
-    data.user_uuid = d.user_uuid
-    data.nickName = d.nickName
-    data.avatar = d.avatar
+    data.user_uuid = d.user_uuid || '匿名'
+    data.nickName = d.nickName || '匿名'
+    data.avatar = d.avatar || 'http://file.upload.waheng.fun/avatar/image/anonymous.jpeg'
     data.title = d.title
     data.content = d.content
     data.like = d.like
@@ -106,7 +106,6 @@ addArticleView({article_nanoid: nanoid, view_user_uuid: userStore.uuid || localS
     .right{
       margin-left: 20px;
       .userName{
-        font-size: 25px;
       }
       .article-info{
         color: #8a919f;

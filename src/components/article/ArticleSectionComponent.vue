@@ -8,7 +8,7 @@
 <template>
   <section>
     <div class="section-info">
-      <span class="nick-name">{{ data.nickName }}</span>
+      <span class="nick-name">{{ data.nickName || '匿名' }}</span>
       <span>|</span>
       <span class="time">{{ data.publishTime }}</span>
     </div>
