@@ -37,7 +37,7 @@ onMounted(() => {
   nextTick(loadHeight)
   getData()
   // 检测resize事件，动态改变 carousel 的高度
-  window.addEventListener('resize', loadHeight);
+  // window.addEventListener('resize', loadHeight);
 })
 </script>
 
