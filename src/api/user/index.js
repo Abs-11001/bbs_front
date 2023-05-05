@@ -54,3 +54,12 @@ export function updateUserInformation(data) {
         data: data
     })
 }
+
+// 修改密码
+export function updateUserPassword(data) {
+    return request({
+        url: '/bbs/user/updateUserPassword',
+        method: 'post',
+        data: data
+    })
+}

@@ -4,11 +4,11 @@
       <el-col :span="3">
         <div class="menu">
           <el-menu default-active="1">
-            <el-menu-item index="1">
+            <el-menu-item index="1" @click="show('individual')">
               <el-icon><User /></el-icon>
               <span>个人资料</span>
             </el-menu-item>
-            <el-menu-item index="2">
+            <el-menu-item index="2" @click="show('account-setting')">
               <el-icon><setting /></el-icon>
               <span>账号设置</span>
             </el-menu-item>
@@ -21,14 +21,14 @@
       </el-col>
       <el-col :span="21">
         <div class="body">
-          <div class="individual">
+          <div v-show="pageShow.individual" class="individual">
             <div class="left">
               <h3>个人资料</h3>
               <el-form :model="individualForm" label-position="left" label-width="80">
                 <el-form-item label="用户名">
                   <el-input
                       disabled
-                      v-model="individualForm.user_name"
+                      :value="user_name"
                       maxlength="15"
                       :show-word-limit="true"
                       clearable ></el-input>
@@ -57,7 +57,7 @@
                       clearable ></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button :disabled="disabled" type="primary" @click="handleUpdate">保存修改</el-button>
+                  <el-button type="primary" @click="handleUpdate">保存修改</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -81,6 +81,40 @@
               </el-upload>
             </div>
           </div>
+          <div v-show="pageShow.account"  class="account-setting">
+            <h3>密码修改</h3>
+            <el-form :model="accountForm" label-position="left" label-width="80" :rules="accountRules">
+              <el-form-item label="用户名">
+                <el-input
+                    disabled
+                    :value="user_name"
+                    maxlength="15"
+                    clearable ></el-input>
+              </el-form-item>
+              <el-form-item label="旧密码" prop="oldPassword">
+                <el-input
+                    v-model="accountForm.oldPassword"
+                    show-password
+                    autocomplete="off"
+                    clearable ></el-input>
+              </el-form-item>
+              <el-form-item label="新密码" prop="newPassword">
+                <el-input
+                    v-model="accountForm.newPassword"
+                    show-password
+                    clearable ></el-input>
+              </el-form-item>
+              <el-form-item label="确认密码" prop="confirmPassword">
+                <el-input
+                    v-model="accountForm.confirmPassword"
+                    show-password
+                    clearable ></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button :disabled="updatePasswordBtn" type="primary" @click="handleAccountUpdate">确认修改</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -90,16 +124,31 @@
 <script setup>
 import {useUserStore} from "@/store/user";
 import {ElMessage} from "element-plus";
-import {reactive, computed} from "vue";
-import {getUserInformation, updateUserInformation} from "@/api/user";
+import {reactive, computed, ref} from "vue";
+import {getUserInformation, updateUserInformation, updateUserPassword} from "@/api/user";
 import {User,Document, Setting} from "@element-plus/icons-vue";
+import md5 from 'js-md5';
 
+const pageShow = reactive({
+  individual: true,
+  account: false,
+})
+
+function show(tab) {
+  pageShow.individual = false
+  pageShow.account = false
+  if(tab === 'individual') {
+    pageShow.individual = true
+  } else if(tab === 'account-setting') {
+    pageShow.account = true
+  }
+}
 
 const userStore = useUserStore()
 const uuid = userStore.uuid || localStorage.getItem("uuid")
-
+const user_name = ref()
+// 个人资料
 const individualForm = reactive({
-  user_name: null,
   nick_name: null,
   _class: null,
   introduce: null,
@@ -112,7 +161,7 @@ getUserInformation({uuid}).then(res => {
   const {code, data} = res
   if(code === 200) {
     if(data.uuid === userStore.uuid) {
-      individualForm.user_name = data.user_name
+      user_name.value = data.user_name
       individualForm.nick_name = data.nick_name
       individualForm._class = data._class
       individualForm.introduce = data.introduce
@@ -154,14 +203,6 @@ const handleUpdate = () => {
   })
 }
 
-const disabled = computed(() => {
-  if(record.user_name === individualForm.user_name &&
-      record.nick_name === individualForm.nick_name &&
-      record._class === individualForm._class &&
-      record.introduce === individualForm.introduce) return true
-  else return false
-})
-
 const beforeAvatarUpload = (rawFile) => {
   console.log(rawFile.type)
   const imageType = ['image/jpeg', 'image/jpg', 'image/png']
@@ -177,6 +218,69 @@ const beforeAvatarUpload = (rawFile) => {
 const handleAvatarSuccess = (uploadFile) => {
   individualForm.avatar = "http://file.upload.waheng.fun/" + uploadFile.data
   userStore.avatar = "http://file.upload.waheng.fun/" + uploadFile.data
+}
+
+
+// 账号设置
+const updatePasswordBtn = ref(true)
+const validatePass = (rule, value, callback) => {
+  updatePasswordBtn.value = true
+  if (value === '') {
+    callback(new Error('请输入确认密码'))
+  } else if (value !== accountForm.newPassword) {
+    callback(new Error("两次密码不一致!"))
+  } else {
+    updatePasswordBtn.value = false
+    callback()
+  }
+}
+const accountRules = reactive({
+  oldPassword: [{ required: true, message: '请输入旧密码', trigger: 'blur' }],
+  newPassword: [{ required: true, message: '请输入新密码', trigger: 'blur' }],
+  confirmPassword: [{ validator: validatePass, trigger: 'blur' }],
+})
+const accountForm = reactive({
+  oldPassword: null,
+  newPassword: null,
+  confirmPassword: null
+})
+
+function handleAccountUpdate() {
+  if(accountForm.oldPassword === '' || accountForm.oldPassword === null || accountForm.oldPassword === undefined) {
+    ElMessage({
+      showClose: true,
+      message: '请输入原密码!',
+      type: 'error',
+    })
+  } else if(accountForm.newPassword === '' || accountForm.newPassword === null || accountForm.newPassword === undefined ) {
+    ElMessage({
+      showClose: true,
+      message: '请输入新密码!',
+      type: 'error',
+    })
+  } else if(accountForm.newPassword !== accountForm.confirmPassword) {
+    ElMessage({
+      showClose: true,
+      message: '两次密码不一致!',
+      type: 'error',
+    })
+  }
+  const data = {
+    uuid: uuid,
+    oldPassword: md5(accountForm.oldPassword),
+    newPassword: md5(accountForm.newPassword),
+    confirmPassword: md5(accountForm.confirmPassword),
+  }
+  updateUserPassword(data).then(res => {
+    const {code, msg} = res
+    if(code === 200) {
+      ElMessage({
+        showClose: true,
+        message: msg,
+        type: 'success',
+      })
+    }
+  })
 }
 </script>
 
