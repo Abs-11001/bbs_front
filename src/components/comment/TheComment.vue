@@ -2,7 +2,7 @@
   <u-comment :config="config" page @submit="submit" @like="like">
     <!-- <template #info>用户信息卡槽</template> -->
 <!--     <template #card>用户信息卡片卡槽</template>-->
-    <u-comment-nav v-model="latest" @sorted="sorted"></u-comment-nav>
+<!--    <u-comment-nav v-model="latest" @sorted="sorted"></u-comment-nav>-->
   </u-comment>
 </template>
 
