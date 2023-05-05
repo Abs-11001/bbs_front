@@ -13,7 +13,7 @@
           <el-menu-item index="/helpEachOther">互帮互助</el-menu-item>
           <el-menu-item index="/treeHole">暨阳树洞</el-menu-item>
       </el-menu>
-      <el-button :icon="EditPen" color="#e8f5e9" @click="toEditor">写文章</el-button>
+<!--      <el-button :icon="EditPen" color="#e8f5e9" @click="toEditor">写文章</el-button>-->
     </div>
   </div>
 </template>
