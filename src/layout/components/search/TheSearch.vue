@@ -32,11 +32,12 @@
       </span>
     </template>
   </el-dialog>
-<!--  <el-divider class="width90"></el-divider>-->
+  <el-divider class="width90"></el-divider>
 </template>
 
 <script setup>
   import { ref, reactive } from 'vue'
+  import { useRouter } from 'vue-router'
   import {USearch} from "undraw-ui";
   import {getTextCarousel} from '@/api/carousel/index.js'
 
@@ -65,6 +66,7 @@
     dialog.visible = true
   }
 
+  const router = useRouter()
   const search = ref('')
   function hotWordsFilter(hotWord) {
     // 截取热搜的前四位关键字
@@ -74,24 +76,14 @@
   }
 
   const config = ref({
-    keywords: ['斗罗大陆', '斗破苍穹', '吞噬星空', '凡人修仙传', '一念永恒'], // 搜索框关键字滚动
+    keywords: ['四级', '六级', '奖学金', '考研', '就业'], // 搜索框关键字滚动
     hotSearchList: [
-      '斗罗大陆',
-      '斗破苍穹',
-      '吞噬星空',
-      '凡人修仙传',
-      '一念永恒',
-      '完美世界',
-      '鬼灭之刃',
-      '间谍过家家',
-      '武动乾坤',
-      '神印王座'
     ] // top10 热门搜索 最多显示10条数据
   })
 
   const submit = (val) => {
-    console.log(val)
-    window.open('/all?keyword=' + val)
+    let routeData = router.resolve({ name: 'search', query: { key: val } });
+    window.open(routeData.href, '_blank');
   }
 </script>
 
@@ -159,6 +151,9 @@
   .publish-time{
     text-align: right;
     font-size: 13px;
+  }
+  .u-search ::v-deep .card-box{
+    display: none;
   }
   .el-divider{
     margin: 5px auto;

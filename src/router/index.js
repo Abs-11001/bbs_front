@@ -64,6 +64,11 @@ const routes = [
                 component: () => import('@/pages/individualCenter/index.vue'),
                 meta: {isLogin: true}
             },
+            {
+                name: 'search',
+                path: 'search',
+                component: () => import('@/pages/search/index.vue'),
+            },
         ]
     },
     {
