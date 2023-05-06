@@ -152,7 +152,7 @@
     text-align: right;
     font-size: 13px;
   }
-  .u-search ::v-deep .card-box{
+  .u-search ::v-deep .card-box .trending{
     display: none;
   }
   .el-divider{
