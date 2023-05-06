@@ -2,7 +2,7 @@
   <div class="filter">
     <el-form :model="form" :inline="true">
       <el-form-item label="标题">
-        <el-input type="text" v-model="form.title" placeholder="请输入标题" @keyup.enter="getData"></el-input>
+        <el-input type="text" v-model="form.title" placeholder="请输入标题" @keyup.enter="getData" clearable></el-input>
       </el-form-item>
       <el-form-item label="部门">
         <el-select
