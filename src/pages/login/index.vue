@@ -15,6 +15,7 @@
                 clearable
                 :prefix-icon="User"
                 autocomplete="on"
+                @keyup.enter="login(loginRef)"
                 placeholder="请输入用户名">
             </el-input>
           </el-form-item>
@@ -25,6 +26,7 @@
                 clearable
                 show-password
                 autocomplete="on"
+                @keyup.enter="login(loginRef)"
                 :prefix-icon="Lock"
                 placeholder="请输入密码">
             </el-input>
@@ -92,7 +94,8 @@ const useStore = useUserStore()
 
 onMounted(() => {
   // 读取用户信息，记住我选项保存后的内容
-  loginForm.loginUserName = useStore.userName
+  loginForm.loginUserName = useStore.userName || localStorage.getItem("rememberUser")
+  loginForm.loginPassword = localStorage.getItem("rememberPassword")
 })
 
 const route = useRoute()
@@ -162,13 +165,13 @@ const login = async (formEl) => {
           userStore.nickName = nick_name
           userStore.avatar = 'http://file.upload.waheng.fun/' + avatar
           // 判断用户是否勾选了记住我
-          // if(loginForm.loginRemember) {
-          //   // localStorage.setItem('user', loginForm.loginUserName)
-          //   // localStorage.setItem('password', loginForm.loginPassword)
-          // }else {
-          //   // localStorage.setItem('user', '')
-          //   // localStorage.setItem('password', '')
-          // }
+          if(loginForm.loginRemember) {
+            localStorage.setItem('rememberUser', loginForm.loginUserName)
+            localStorage.setItem('rememberPassword', loginForm.loginPassword)
+          }else {
+            localStorage.setItem('rememberUser', '')
+            localStorage.setItem('rememberPassword', '')
+          }
           ElMessage({
             message: '登录成功',
             type: 'success',
