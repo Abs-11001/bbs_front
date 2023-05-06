@@ -24,8 +24,9 @@
     <div class="content" v-html="data.content"></div>
     <the-comment></the-comment>
     <el-tooltip content="点赞" placement="top">
-      <div id="source" class="fixed" @click="goToSource">
-        <thumbs-up theme="outline" size="24" fill="#409EFC"/>
+      <div id="like" class="fixed"  @click="recordLike(data.nanoid)">
+        <thumbs-up v-if="isCancel" theme="filled" size="24" fill="#409EFC"/>
+        <thumbs-up v-else theme="outline" size="24" fill="#409EFC"/>
       </div>
     </el-tooltip>
     <el-tooltip content="分享给好友" placement="top">
@@ -43,6 +44,9 @@ import TheComment from "@/components/comment/TheComment.vue";
 import {getDetailArticle, addArticleView} from "@/api/article";
 import {ThumbsUp, ShareOne} from "@icon-park/vue-next";
 import {useUserStore} from "@/store/user";
+import { recordUserLike, getCurUserLike } from "@/api/articleLike";
+import useClipboard from 'vue-clipboard3'
+import {ElMessage} from "element-plus";
 
 
 const route = useRoute()
@@ -81,14 +85,60 @@ getDetailArticle({nanoid}).then(res => {
     data.publishTime = d.publishTime
   }
 }, err => {
-  console.log(err)
   fullscreenLoading.value = false
 })
 
-addArticleView({article_nanoid: nanoid, view_user_uuid: userStore.uuid || localStorage.getItem('uuid')}).then(res => {
+// 增加文章浏览量
+addArticleView({article_nanoid: nanoid, view_user_uuid: userStore.uuid || localStorage.getItem('uuid')})
 
-}, err => {})
+const isCancel = ref(false)
+// 获取当前用户是否点赞过当前文章
+getCurUserLike({article_nanoid: nanoid, like_user_uuid: userStore.uuid || localStorage.getItem('uuid')}).then(res => {
+  const { data } = res
+  if(data === null || data === undefined) return
+  isCancel.value = !data.cancel
+})
 
+// 点赞
+function recordLike(nanoid) {
+  const data = {
+    article_nanoid: nanoid,
+    like_user_uuid: userStore.uuid || localStorage.getItem('uuid'),
+    isCancel: isCancel.value
+  }
+  if(data.article_nanoid === null || data.article_nanoid === undefined || data.article_nanoid === '') {
+    ElMessage({
+      message: '请合理使用服务',
+      type: 'error',
+    })
+    return
+  }
+  if(data.like_user_uuid === null || data.like_user_uuid === undefined || data.like_user_uuid === '') {
+    ElMessage({
+      message: '请登录账号再进行操作',
+      type: 'error',
+    })
+    return
+  }
+
+  recordUserLike(data).then(res => {
+    isCancel.value = !isCancel.value
+  })
+}
+
+// 复制相关信息到剪贴板
+const toShare = async () => {
+  const { toClipboard } = useClipboard()
+  try {
+    await toClipboard(`标题:${data.title}\n发布人:${data.nickName}\n发布时间:${data.publishTime}\n链接:${location.href}`)
+    ElMessage({
+      message: '成功复制相关信息',
+      type: 'success',
+    })
+  } catch (e) {
+    console.error(e)
+  }
+}
 
 </script>
 
@@ -128,7 +178,7 @@ addArticleView({article_nanoid: nanoid, view_user_uuid: userStore.uuid || localS
       background-color: #f2f6fc;
     }
   }
-  #source{
+  #like{
     bottom: 150px;
   }
   #share{

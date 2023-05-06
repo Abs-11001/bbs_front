@@ -26,6 +26,7 @@ import {getAnnouncementData, getAnnouncementWithUuid} from "@/api/announcement";
 import {Promotion, Share} from '@element-plus/icons-vue'
 import useClipboard from 'vue-clipboard3'
 import TheComment from "@/components/comment/TheComment.vue";
+import {ElMessage} from "element-plus";
 
 // 加载状态控制
 const fullscreenLoading = ref(true)
