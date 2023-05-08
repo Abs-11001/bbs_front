@@ -23,30 +23,30 @@
         <div class="part-title">友情链接</div>
         <ul>
           <li>
-            <el-link href="http://www.waheng.fun" target="_blank">浙江农林大学暨阳学院</el-link>
-          </li>
-          <li>
-            <el-link href="http://www.waheng.fun" target="_blank">百度</el-link>
+            <el-link href="http://www.waheng.fun" target="_blank">浙江大学</el-link>
           </li>
           <li>
             <el-link href="http://www.waheng.fun" target="_blank">浙江农林大学</el-link>
           </li>
-        </ul>
-      </div>
-      <div class="part">
-        <div class="part-title">网站相关</div>
-        <ul>
           <li>
-            <el-link href="http://www.waheng.fun" target="_blank">常见问题</el-link>
-          </li>
-          <li>
-            <el-link href="http://www.waheng.fun" target="_blank">规章制度</el-link>
-          </li>
-          <li>
-            <el-link href="http://www.waheng.fun" target="_blank">免责申明</el-link>
+            <el-link href="http://www.waheng.fun" target="_blank">浙江农林大学暨阳学院</el-link>
           </li>
         </ul>
       </div>
+<!--      <div class="part">-->
+<!--        <div class="part-title">网站相关</div>-->
+<!--        <ul>-->
+<!--          <li>-->
+<!--            <el-link href="http://www.waheng.fun" target="_blank">常见问题</el-link>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <el-link href="http://www.waheng.fun" target="_blank">规章制度</el-link>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <el-link href="http://www.waheng.fun" target="_blank">免责申明</el-link>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
     </div>
   </footer>
 </template>
