@@ -52,6 +52,10 @@ const config = reactive<ConfigApi>({
 let temp_id = 100
 // 提交评论事件
 const submit = ({ content, parentId, files, finish }: SubmitParamApi) => {
+  if(config.user.id === null || config.user.id === '') {
+    UToast({ message: '失败，请登录账号!', type: 'error' })
+    return
+  }
   console.log('提交评论: ' + content, parentId, files, finish)
 
   /**
@@ -70,7 +74,7 @@ const submit = ({ content, parentId, files, finish }: SubmitParamApi) => {
   addArticleComment(data).then(res => {
     const { code } = res
     if(code === 200) {
-      UToast({ message: '评论成功!', type: 'info' })
+      UToast({ message: '评论成功!', type: 'success' })
     }
   }, err => {
     console.log(err)
@@ -95,7 +99,7 @@ const submit = ({ content, parentId, files, finish }: SubmitParamApi) => {
   }
   setTimeout(() => {
     finish(comment)
-    UToast({ message: '评论成功!', type: 'info' })
+    UToast({ message: '评论成功!', type: 'success' })
   }, 200)
 }
 

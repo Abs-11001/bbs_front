@@ -247,7 +247,7 @@ const validatePass = (rule, value, callback) => {
 const accountRules = reactive({
   oldPassword: [{ required: true, message: '请输入旧密码', trigger: 'blur' }],
   newPassword: [{ required: true, message: '请输入新密码', trigger: 'blur' }],
-  confirmPassword: [{ validator: validatePass, trigger: 'blur' }],
+  confirmPassword: [{ required: true, validator: validatePass, trigger: 'blur' }],
 })
 const accountForm = reactive({
   oldPassword: null,
