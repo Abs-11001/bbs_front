@@ -32,7 +32,7 @@
       </span>
     </template>
   </el-dialog>
-  <el-divider class="width90"></el-divider>
+<!--  <el-divider class="width90"></el-divider>-->
 </template>
 
 <script setup>

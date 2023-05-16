@@ -13,7 +13,7 @@ export function getAnnouncement(query) {
 export function getAnnouncementKey() {
     return request({
         url: '/bbs/announcement/getAnnouncementKey',
-        methos: 'get'
+        method: 'get'
     })
 }
 
@@ -21,7 +21,7 @@ export function getAnnouncementKey() {
 export function getAnnouncementData(query) {
     return request({
         url: '/bbs/announcement/getAnnouncementData',
-        methos: 'get',
+        method: 'get',
         params: query
     })
 }
@@ -30,7 +30,26 @@ export function getAnnouncementData(query) {
 export function getAnnouncementWithUuid(query) {
     return request({
         url: '/bbs/announcement/getAnnouncementWithUuid',
-        methos: 'get',
+        method: 'get',
         params: query
+    })
+}
+
+// 获取当前登录用户未读公告
+export function getNoReadAnnouncement(query) {
+    console.log(query)
+    return request({
+        url: '/bbs/announcement/getNoReadAnnouncement',
+        method: 'get',
+        params: query
+    })
+}
+
+// 记录用户读了公告
+export function recordRead(data) {
+    return request({
+        url: '/bbs/announcement/recordRead',
+        method: 'post',
+        data: data
     })
 }

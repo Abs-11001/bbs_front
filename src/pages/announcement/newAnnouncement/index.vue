@@ -8,6 +8,31 @@
 <template>
   <el-collapse v-model="activeTitle"
                v-loading.fullscreen.lock="fullscreenLoading">
+    <el-collapse-item name="未读">
+      <template #title>
+        <el-badge v-model:value="noReadTotal">
+          <h2 style="color: #fa4227">未读公告</h2>
+        </el-badge>
+      </template>
+      <el-table :data="noReadList">
+        <el-table-column prop="title" label="标题">
+          <template #default="scope">
+            <el-link @click="goToDetail(scope.row)">{{ scope.row.title }}</el-link>
+          </template>
+        </el-table-column>
+        <el-table-column prop="department" width="160" align="center" label="部门">
+          <template #default="scope">
+            <el-tag>{{ scope.row.department }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="plate" width="150" align="center" label="板块">
+          <template #default="scope">
+            <el-tag type="success">{{ scope.row.plate }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="date" width="150" align="center" label="发布时间"></el-table-column>
+      </el-table>
+    </el-collapse-item>
     <el-collapse-item
         v-for="item in announcementKey"
         :name="item['department']"
@@ -46,11 +71,14 @@
 
 <script setup>
 import { ref } from 'vue'
-import {getAnnouncement, getAnnouncementKey} from "@/api/announcement";
+import {getAnnouncement, getAnnouncementKey, getNoReadAnnouncement, recordRead} from "@/api/announcement";
 import {useRouter} from "vue-router";
+import {useUserStore} from "@/store/user";
+
+const userStore = useUserStore()
 
 // collapse 一级展开标题
-const activeTitle = ref(['官网', '学工部'])
+const activeTitle = ref(['未读', '官网'])
 // collapse 二级展开标题
 // const activeSubTitle = ref(['学院要闻', '综合新闻'])
 
@@ -116,9 +144,39 @@ function change(activeName) {
 
 const router = useRouter()
 function goToDetail(announcement) {
+  // 记录该条通知已经被当前用户查阅过了
+  const data = {
+    announcement_uuid: announcement.uuid,
+    user_uuid: userStore.uuid
+  }
+  recordRead(data)
+  // 重新加载数据列表
+  getNoReadList()
+
+  // 打开链接
   let routeData = router.resolve({ name: 'detailAnnouncement', query: { uuid: announcement.uuid } });
   window.open(routeData.href, '_blank');
 }
+
+// tabs相关
+const noReadList = ref([])
+const noReadTotal = ref(0)
+
+// 获取当前用户未读公告
+getNoReadList()
+function getNoReadList() {
+  if(userStore.uuid === undefined || userStore.uuid === null) return
+  const query = {
+    user_uuid: userStore.uuid
+  }
+  getNoReadAnnouncement(query).then(res => {
+    const { data: { total, dataList }} = res
+    noReadList.value = dataList
+    noReadTotal.value = total
+  })
+}
+
+
 </script>
 
 <style lang="less" scoped>
